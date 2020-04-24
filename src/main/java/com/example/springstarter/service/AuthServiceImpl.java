@@ -16,7 +16,7 @@ public class AuthServiceImpl implements AuthService {
     private LoginRepository loginRepository;
 
     @Override
-    public ApiResponse login(LoginModel model) {
+    public ApiResponse login(LoginModel model) {                                 //FOR AUTHENTICATION OF THE LOGIN USERNAME AND PWD WE ARE FETCHING FROM DB(REPOSITORY)
         User user = this.loginRepository.findUser(model.getUsername());
         if (user.getUsername().isEmpty()) {
             ApiResponse response =  new ApiResponse();
