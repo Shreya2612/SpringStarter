@@ -6,6 +6,10 @@ public class UserModel{
 	private String contact;
 	private Long id;
 
+	public UserModel() {
+
+	}
+
 	public UserModel(String username) {
 		this(username, "");
 	}
