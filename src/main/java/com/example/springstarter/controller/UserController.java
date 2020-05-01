@@ -20,7 +20,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ApiResponse create(@RequestBody UserModel model) {
-        return this.userService.addUser(model);
+        return this.userService.addUser(model);     //return response from service
     }
 
     /*

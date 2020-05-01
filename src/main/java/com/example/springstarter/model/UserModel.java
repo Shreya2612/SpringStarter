@@ -7,11 +7,10 @@ public class UserModel{
 	private Long id;
 
 	public UserModel() {
-
 	}
 
 	public UserModel(String username) {
-		this(username, "");
+	    this(username, "");
 	}
 
 	public UserModel(String username, String password) {

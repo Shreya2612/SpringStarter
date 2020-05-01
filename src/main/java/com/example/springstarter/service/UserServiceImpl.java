@@ -5,8 +5,10 @@ import com.example.springstarter.model.ApiResponse;
 import com.example.springstarter.model.UserModel;
 import com.example.springstarter.repository.UserRepository;
 import com.example.springstarter.util.Constants;
+import com.example.springstarter.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+//import org.apache.commons.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,22 +22,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse addUser(UserModel model) {
-        User user = this.userRepository.createUser(model);
 
-        ApiResponse response = new ApiResponse();
-        if (!user.getUsername().isEmpty()) {
-            response.setStatus(Constants.MSG_STATUS_SUC);
-            response.setMessage(Constants.MSG_CREATE_USER);
-            response.setStatusCode(Constants.ErrorCodes.CODE_CREATE_SUCCESS);
-            response.setData(Arrays.asList(user));
+        boolean valid = Utility.userValidation(model);  // user validation part
+        if(valid){
+            User user = this.userRepository.createUser(model);   //User Entity class being used here to map DB entities into  java class
+            ApiResponse response = new ApiResponse();
+            if (!user.getUsername().isEmpty()) {
+                response.setStatus(Constants.MSG_STATUS_SUC);
+                response.setMessage(Constants.MSG_CREATE_USER);
+                response.setStatusCode(Constants.ErrorCodes.CODE_CREATE_SUCCESS);
+                response.setData(Arrays.asList(user));
 
-        }else {
+            } else {
+                response.setStatus(Constants.MSG_STATUS_FAIL);
+                response.setMessage(Constants.MSG_CREATE_USER_FAIL);
+                response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
+                response.setData(Collections.emptyList());
+            }
+            return response;
+        }
+        else{
+            ApiResponse response = new ApiResponse();
             response.setStatus(Constants.MSG_STATUS_FAIL);
-            response.setMessage(Constants.MSG_CREATE_USER_FAIL);
+            response.setMessage(Constants.MSG_CREATE_USER_VALID_FAIL);
             response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
             response.setData(Collections.emptyList());
+            return response;
         }
-        return response;
+
     }
 
     @Override
