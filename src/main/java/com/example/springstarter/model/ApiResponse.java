@@ -40,6 +40,16 @@ public class ApiResponse{
 		return statusCode;
 	}
 
+	public ApiResponse(List<Object> data, String message, String status, int statusCode) {
+		this.data = data;
+		this.message = message;
+		this.status = status;
+		this.statusCode = statusCode;
+	}
+
+	public ApiResponse() {
+	}
+
 	@Override
  	public String toString(){
 		return 

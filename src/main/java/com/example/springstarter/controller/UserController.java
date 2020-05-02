@@ -4,10 +4,15 @@ package com.example.springstarter.controller;
 import com.example.springstarter.model.ApiResponse;
 import com.example.springstarter.model.LoginModel;
 import com.example.springstarter.model.UserModel;
+import com.example.springstarter.repository.UserRepository;
+import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.service.AuthService;
 import com.example.springstarter.service.UserService;
+import com.example.springstarter.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/user")
@@ -16,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired UsersRepository usersRepository;
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -35,14 +42,12 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)   //currently not using this..written just to under. the parameters of GET
-    public ApiResponse getUserReqParam(@RequestParam("username") String username, @RequestParam("id") Integer id) {
-        return this.userService.getUser(username);
+    public ApiResponse getUserReqParam(@RequestParam("username") String username, @RequestParam("id") Long id) {
+        return this.userService.getUser(username, id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ApiResponse delete(@PathVariable Long id) {
-        UserModel model = new UserModel();
-        model.setId(id);
         return this.userService.deleteUser(id);
     }
 

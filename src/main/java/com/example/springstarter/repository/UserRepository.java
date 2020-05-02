@@ -20,3 +20,4 @@ public interface UserRepository {
      User deleteUserById(Long id);
      User updateUser(Long id, UserModel model);
 }
+
