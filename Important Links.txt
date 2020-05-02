@@ -1,0 +1,20 @@
+https://stackoverflow.com/questions/30237768/run-spring-boots-main-using-ide (Answer 8)
+
+
+Add a POST method /api/user/create
+Body: {"username": "Shivam", "password": "Hello124", }
+Controller: UserController
+RequestBody Model: UserModel
+
+
+Service: UserService
+
+1. ApiResponse getUser(UserModel model)
+2. ApiResponse addUser(UserModel model)
+
+
+Repository: UserRepository
+Maintain a static map of user and passwords
+
+1. findUserByUsername(String userName) -> return  User, empty user if not found
+2. createUser(String username, String password) -> User, null if not created

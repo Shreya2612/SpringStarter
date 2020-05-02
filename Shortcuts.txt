@@ -1,0 +1,9 @@
+CTRL + ALT + SHIFT + INSERT -> scratch files
+CTRL + K -> commit files / view Changes
+CTRL + B -> to go to declarations **
+CTRL + D -> to copy selected lines
+CTRL + O -> to overwrite methods of interface
+CTRL + Q -> Documentation
+
+ALT + ENTER -> to view suggestions
+
