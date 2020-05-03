@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired UsersRepository usersRepository;
+    @Autowired UsersRepository usersRepository;    //point of creating this here??
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -41,7 +41,7 @@ public class UserController {
         return this.userService.getUser(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)   //currently not using this..written just to under. the parameters of GET
+    @RequestMapping(method = RequestMethod.GET)   //currently not using this..written just to understand the @RequestParam parameter of GET
     public ApiResponse getUserReqParam(@RequestParam("username") String username, @RequestParam("id") Long id) {
         return this.userService.getUser(username, id);
     }
@@ -52,8 +52,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ApiResponse update(@PathVariable Long id,@RequestBody UserModel model) {                   //Handler
+    public ApiResponse update(@PathVariable Long id,@RequestBody UserModel model) {                   // update method here is called Handler
         return this.userService.updateUser(id,model);
     }
 
+    @GetMapping(value = "/list")
+    public ApiResponse getList() {
+        return this.userService.getUserList();
+    }
 }

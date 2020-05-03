@@ -12,15 +12,17 @@ import com.example.springstarter.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 //import org.apache.commons.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,45 +30,40 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UsersRepository usersRepository;
+    private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
 
 
-    @Override
-    public ApiResponse addUser(UserModel model) {
-
-        boolean valid = Utility.userValidation(model);  // user validation part
-        if (valid) {
-            User user = this.userRepository.createUser(model);   //User Entity class being used here to map DB entities into  java class
-            ApiResponse response = new ApiResponse();
-            if (!user.getUsername().isEmpty()) {
-                response.setStatus(Constants.MSG_STATUS_SUC);
-                response.setMessage(Constants.MSG_CREATE_USER);
-                response.setStatusCode(Constants.ErrorCodes.CODE_CREATE_SUCCESS);
-                response.setData(Arrays.asList(user));
-
-            } else {
-                response.setStatus(Constants.MSG_STATUS_FAIL);
-                response.setMessage(Constants.MSG_CREATE_USER_FAIL);
-                response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
-                response.setData(Collections.emptyList());
-            }
-            return response;
-        } else {
-            ApiResponse response = new ApiResponse();
-            response.setStatus(Constants.MSG_STATUS_FAIL);
-            response.setMessage(Constants.MSG_CREATE_USER_VALID_FAIL);
-            response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
-            response.setData(Collections.emptyList());
-            return response;
-        }
-
+@Transactional
+  @Override
+    public ApiResponse addUser(UserModel model) {    // extra username is coming
+    boolean valid = Utility.userValidation(model);  // user validation part
+    if (valid) {
+        Users users = new Users();
+        users.setFirstName(model.getFirstName());
+        users.setLastName(model.getLastName());
+        users.setContact(Long.parseLong(model.getContact()));
+        users.setMail(model.getMail());
+        Users userOpt = this.usersRepository.save(users);
+        return new ApiResponse(
+                Arrays.asList(userOpt),
+                Constants.MSG_CREATE_USER,
+                Constants.MSG_STATUS_SUC,
+                Constants.ErrorCodes.CODE_SUCCESS
+        );
     }
+    ApiResponse response = new ApiResponse();
+    response.setStatus(Constants.MSG_STATUS_FAIL);
+    response.setMessage(Constants.MSG_CREATE_USER_VALID_FAIL);
+    response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
+    response.setData(Collections.emptyList());
+    return response;
+}
 
     @Override
-    public ApiResponse getUser(String firstName, Long id) {
+    public ApiResponse getUser(String firstName, Long id) {    // which firstName is this ..one which is coming from controller?
         Optional<Users> userOpt = this.usersRepository.findOne(
                 (root, criteriaQuery, criteriaBuilder) -> {
-                    Predicate fPred = criteriaBuilder.equal(root.get("firstName"), firstName);
+                    Predicate fPred = criteriaBuilder.equal(root.get("firstName"), firstName);  //this is the same firstName?
                     Predicate idPred = criteriaBuilder.equal(root.get("id"), id);
                     return criteriaBuilder.and(fPred, idPred);
                 }
@@ -175,23 +172,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse updateUser(Long id, UserModel model) {
-        User user = this.userRepository.updateUser(id, model);
-        ApiResponse response = new ApiResponse();
-        if (user == null) {
-            response.setStatus(Constants.MSG_STATUS_FAIL);
-            response.setMessage(Constants.MSG_AUTH_NO_USER);
-            response.setStatusCode(Constants.ErrorCodes.CODE_GET_USER_FAIL);
-            response.setData(Collections.emptyList());
-        } else {
-            response.setStatus(Constants.MSG_STATUS_SUC);
-            response.setMessage(Constants.MSG_USER_UPDATE);
-            response.setStatusCode(Constants.ErrorCodes.CODE_SUCCESS);
-            response.setData(Arrays.asList(user));
-        }
+        Optional<Users> usersOptional = usersRepository.findById(id);
+        return usersOptional.map(u -> {                         //converting/mapping Users to ApiResponse
+            u.setFirstName(model.getFirstName());
+            u.setLastName(model.getLastName());
+            u.setContact(Long.parseLong(model.getContact()));
+            u.setMail(model.getMail());
+            Users saved = usersRepository.save(u);
+            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS,Constants.MSG_USER_UPDATE,Arrays.asList(saved));
+        }).orElse(ApiResponse.failResponse(Constants.ErrorCodes.CODE_GET_USER_FAIL,Constants.MSG_AUTH_NO_USER));
 
-        return response;
 
     }
 
+   // A -> [()] -> B
 
+
+    @Override
+    public ApiResponse getUserList() {
+        Iterable<Users> users = this.usersRepository.findAll();
+        final List<Users> userList = new ArrayList<>();
+        users.forEach(u -> {
+            userList.add(u);
+        });
+
+        if (userList.isEmpty()) {
+            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_NO_DATA, Constants.MSG_NO_DATA,  Collections.EMPTY_LIST);
+        }
+        return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS, Constants.MSG_STATUS_SUC, new ArrayList<>(userList));
+
+
+        //Stream.of(users).collect(Collectors.toList());
+
+        /*List<String> list = Arrays.asList("Shreya", "divisha", "Turior");
+        list.stream().collect(Collectors.joining(":"));*/
+    }
 }
+

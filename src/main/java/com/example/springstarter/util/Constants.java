@@ -17,6 +17,8 @@ public interface Constants {
     String MSG_USER_DELETE = "User Successfully deleted !";
     String MSG_USER_UPDATE = "User Updated Successfully !";
 
+    String MSG_NO_DATA = "No data found";
+
 
     String MSG_ERR_GENERIC = "Something went wrong. The server is unable to process your request";
 
@@ -24,6 +26,7 @@ public interface Constants {
         int CODE_SUCCESS = 200;
         int CODE_FAIL = 500;
         int CODE_CREATE_SUCCESS = 201;
+        int CODE_NO_DATA = 202;
 
         int CODE_AUTH_SUCCESS = 901;
         int CODE_AUTH_FAIL = 902;
