@@ -21,6 +21,9 @@ public class Users implements Serializable {
     @Column(name = "id",insertable = false, nullable = false)
     private Long id;
 
+    @OneToOne(mappedBy = "users")
+    private AuthUser authUser;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 

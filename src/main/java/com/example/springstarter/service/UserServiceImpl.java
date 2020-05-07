@@ -1,63 +1,51 @@
 package com.example.springstarter.service;
 
-import com.example.springstarter.entity.User;
 import com.example.springstarter.entity.Users;
 import com.example.springstarter.model.ApiResponse;
 import com.example.springstarter.model.UserModel;
-import com.example.springstarter.repository.UserRepository;
 import com.example.springstarter.repository.UsersRepository;
-import com.example.springstarter.repository.specs.UserSpecification;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-//import org.apache.commons.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
 
 
-@Transactional
-  @Override
+    @Override
     public ApiResponse addUser(UserModel model) {    // extra username is coming
-    boolean valid = Utility.userValidation(model);  // user validation part
-    if (valid) {
-        Users users = new Users();
-        users.setFirstName(model.getFirstName());
-        users.setLastName(model.getLastName());
-        users.setContact(Long.parseLong(model.getContact()));
-        users.setMail(model.getMail());
-        Users userOpt = this.usersRepository.save(users);
-        return new ApiResponse(
-                Arrays.asList(userOpt),
-                Constants.MSG_CREATE_USER,
-                Constants.MSG_STATUS_SUC,
-                Constants.ErrorCodes.CODE_SUCCESS
-        );
+        boolean valid = Utility.userValidation(model);  // user validation part
+        if (valid) {
+            Users users = new Users();
+            users.setFirstName(model.getFirstName());
+            users.setLastName(model.getLastName());
+            users.setContact(Long.parseLong(model.getContact()));
+            users.setMail(model.getMail());
+            Users userOpt = this.usersRepository.save(users);
+            return new ApiResponse(
+                    Arrays.asList(userOpt),
+                    Constants.MSG_CREATE_USER,
+                    Constants.MSG_STATUS_SUC,
+                    Constants.ErrorCodes.CODE_SUCCESS
+            );
+        }
+        ApiResponse response = new ApiResponse();
+        response.setStatus(Constants.MSG_STATUS_FAIL);
+        response.setMessage(Constants.MSG_CREATE_USER_VALID_FAIL);
+        response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
+        response.setData(Collections.emptyList());
+        return response;
     }
-    ApiResponse response = new ApiResponse();
-    response.setStatus(Constants.MSG_STATUS_FAIL);
-    response.setMessage(Constants.MSG_CREATE_USER_VALID_FAIL);
-    response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
-    response.setData(Collections.emptyList());
-    return response;
-}
 
     @Override
     public ApiResponse getUser(String firstName, Long id) {    // which firstName is this ..one which is coming from controller?
@@ -157,8 +145,7 @@ public class UserServiceImpl implements UserService {
                     Constants.MSG_STATUS_FAIL,
                     Constants.ErrorCodes.CODE_FAIL
             );
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ApiResponse(
                     Collections.emptyList(),
@@ -179,27 +166,37 @@ public class UserServiceImpl implements UserService {
             u.setContact(Long.parseLong(model.getContact()));
             u.setMail(model.getMail());
             Users saved = usersRepository.save(u);
-            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS,Constants.MSG_USER_UPDATE,Arrays.asList(saved));
-        }).orElse(ApiResponse.failResponse(Constants.ErrorCodes.CODE_GET_USER_FAIL,Constants.MSG_AUTH_NO_USER));
+            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS, Constants.MSG_USER_UPDATE, Arrays.asList(saved));
+        }).orElse(ApiResponse.failResponse(Constants.ErrorCodes.CODE_GET_USER_FAIL, Constants.MSG_AUTH_NO_USER));
 
 
     }
 
-   // A -> [()] -> B
+    // A -> [()] -> B
 
 
     @Override
     public ApiResponse getUserList() {
-        Iterable<Users> users = this.usersRepository.findAll();
+
+        Iterable<Users> users = this.usersRepository.findAll(Sort.by("id"));
         final List<Users> userList = new ArrayList<>();
         users.forEach(u -> {
             userList.add(u);
         });
+        // ArrayList<Users> sortedList = new ArrayList<>();
+        /* Another way -
+         for(Users u : users) {
+         userList.add(u);
+         }*/
 
         if (userList.isEmpty()) {
-            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_NO_DATA, Constants.MSG_NO_DATA,  Collections.EMPTY_LIST);
+            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_NO_DATA,
+                    Constants.MSG_NO_DATA,
+                    Collections.EMPTY_LIST);
         }
-        return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS, Constants.MSG_STATUS_SUC, new ArrayList<>(userList));
+        return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS,
+                Constants.MSG_STATUS_SUC,
+                new ArrayList<>(userList));
 
 
         //Stream.of(users).collect(Collectors.toList());

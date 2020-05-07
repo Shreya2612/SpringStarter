@@ -22,9 +22,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired UsersRepository usersRepository;    //point of creating this here??
-
-
     @RequestMapping(method = RequestMethod.POST)
     public ApiResponse create(@RequestBody UserModel model) {
         return this.userService.addUser(model);     //return response from service
@@ -36,8 +33,6 @@ public class UserController {
     * */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ApiResponse get(@PathVariable Long id) {
-        UserModel model = new UserModel();
-        model.setId(id);
         return this.userService.getUser(id);
     }
 

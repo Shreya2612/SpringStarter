@@ -16,6 +16,10 @@ public class AuthUser implements Serializable {
     @Column(name = "id", insertable = false, nullable = false)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "userid", referencedColumnName = "id", insertable=false,updatable = false)
+    private Users users;
+
     @Column(name = "userid", nullable = false)
     private Long userid;
 
