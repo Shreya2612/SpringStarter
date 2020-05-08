@@ -1,0 +1,73 @@
+package com.example.springstarter.model.response;
+
+import com.google.gson.annotations.SerializedName;
+
+public class UserResponse{
+
+	@SerializedName("firstName")
+	private String firstName;
+
+	@SerializedName("lastName")
+	private String lastName;
+
+	@SerializedName("mail")
+	private String mail;
+
+	@SerializedName("contact")
+	private Long contact;
+
+	@SerializedName("id")
+	private Long id;
+
+	public void setFirstName(String firstName){
+		this.firstName = firstName;
+	}
+
+	public String getFirstName(){
+		return firstName;
+	}
+
+	public void setLastName(String lastName){
+		this.lastName = lastName;
+	}
+
+	public String getLastName(){
+		return lastName;
+	}
+
+	public void setMail(String mail){
+		this.mail = mail;
+	}
+
+	public String getMail(){
+		return mail;
+	}
+
+	public void setContact(Long contact){
+		this.contact = contact;
+	}
+
+	public long getContact(){
+		return contact;
+	}
+
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public Long getId(){
+		return id;
+	}
+
+	@Override
+ 	public String toString(){
+		return 
+			"UserResponse{" + 
+			"firstName = '" + firstName + '\'' + 
+			",lastName = '" + lastName + '\'' + 
+			",mail = '" + mail + '\'' + 
+			",contact = '" + contact + '\'' + 
+			",id = '" + id + '\'' + 
+			"}";
+		}
+}

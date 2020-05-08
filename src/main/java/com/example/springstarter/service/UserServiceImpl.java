@@ -3,9 +3,12 @@ package com.example.springstarter.service;
 import com.example.springstarter.entity.Users;
 import com.example.springstarter.model.ApiResponse;
 import com.example.springstarter.model.UserModel;
+import com.example.springstarter.model.response.UserResponse;
 import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
 
@@ -32,8 +35,10 @@ public class UserServiceImpl implements UserService {
             users.setContact(Long.parseLong(model.getContact()));
             users.setMail(model.getMail());
             Users userOpt = this.usersRepository.save(users);
+            UserResponse ob = new UserResponse();
+            ob.setId(userOpt.getId());
             return new ApiResponse(
-                    Arrays.asList(userOpt),
+                    Arrays.asList(ob),
                     Constants.MSG_CREATE_USER,
                     Constants.MSG_STATUS_SUC,
                     Constants.ErrorCodes.CODE_SUCCESS
@@ -94,12 +99,25 @@ public class UserServiceImpl implements UserService {
     public ApiResponse getUser(Long id) {
         Optional<Users> userOpt = this.usersRepository.findById(id);
         return userOpt
-                .map(users ->
-                        new ApiResponse(
-                                Arrays.asList(users),
-                                Constants.MSG_USER_FOUND,
-                                Constants.MSG_STATUS_SUC,
-                                Constants.ErrorCodes.CODE_SUCCESS)
+                .map(users -> {
+//                    Gson gson = new Gson();
+//                    String json =  gson.toJson(users);
+
+                    UserResponse ob = new UserResponse();
+                    ob.setId(users.getId());
+                    ob.setFirstName(users.getFirstName());
+                    ob.setLastName(users.getLastName());
+                    ob.setMail(users.getMail());
+                    ob.setContact(users.getContact());
+
+                    LOG.info(ob.toString());
+
+                    return new ApiResponse(
+                            Arrays.asList(ob),
+                            Constants.MSG_USER_FOUND,
+                            Constants.MSG_STATUS_SUC,
+                            Constants.ErrorCodes.CODE_SUCCESS);
+                    }
                 )
                 .orElse(new ApiResponse(
                         Collections.emptyList(),
@@ -133,8 +151,16 @@ public class UserServiceImpl implements UserService {
             Optional<Users> userOpt = this.usersRepository.findById(id);
             if (userOpt.isPresent()) {
                 this.usersRepository.deleteById(id);
+                Users users = userOpt.get();
+                UserResponse ob = new UserResponse();
+                ob.setId(users.getId());
+                ob.setFirstName(users.getFirstName());
+                ob.setLastName(users.getLastName());
+                ob.setMail(users.getMail());
+                ob.setContact(users.getContact());
+
                 return new ApiResponse(
-                        Arrays.asList(userOpt.get()),
+                        Arrays.asList(ob),
                         Constants.MSG_USER_DELETE,
                         Constants.MSG_STATUS_SUC,
                         Constants.ErrorCodes.CODE_SUCCESS);
@@ -166,7 +192,9 @@ public class UserServiceImpl implements UserService {
             u.setContact(Long.parseLong(model.getContact()));
             u.setMail(model.getMail());
             Users saved = usersRepository.save(u);
-            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS, Constants.MSG_USER_UPDATE, Arrays.asList(saved));
+            UserResponse ob = new UserResponse();
+            ob.setId(saved.getId());
+            return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS, Constants.MSG_USER_UPDATE, Arrays.asList(ob));
         }).orElse(ApiResponse.failResponse(Constants.ErrorCodes.CODE_GET_USER_FAIL, Constants.MSG_AUTH_NO_USER));
 
 
@@ -179,9 +207,15 @@ public class UserServiceImpl implements UserService {
     public ApiResponse getUserList() {
 
         Iterable<Users> users = this.usersRepository.findAll(Sort.by("id"));
-        final List<Users> userList = new ArrayList<>();
+        final List<UserResponse> userList = new ArrayList<>();
         users.forEach(u -> {
-            userList.add(u);
+            UserResponse ob = new UserResponse();
+            ob.setId(u.getId());
+            ob.setFirstName(u.getFirstName());
+            ob.setLastName(u.getLastName());
+            ob.setMail(u.getMail());
+            ob.setContact(u.getContact());
+            userList.add(ob);
         });
         // ArrayList<Users> sortedList = new ArrayList<>();
         /* Another way -

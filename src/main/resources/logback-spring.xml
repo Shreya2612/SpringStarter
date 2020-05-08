@@ -59,7 +59,7 @@
      
         <!-- LOG "com.baeldung*" at TRACE level -->
         
-    <logger name="com.example.springstarter" level="trace" additivity="false">
+    <logger name="com.example.springstarter" level="all" additivity="false">
                 
         <appender-ref ref="RollingFile"/>
                 
