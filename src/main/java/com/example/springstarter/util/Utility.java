@@ -3,6 +3,9 @@ package com.example.springstarter.util;
 import com.example.springstarter.model.UserModel;
 
 public interface Utility {
+    String AUTH_TOKEN = "S3cretT0k3N@=";
+
+    String REGEX_ALPHANUMERIC = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@=]))";
 
     static boolean userValidation(UserModel model) {
         return
