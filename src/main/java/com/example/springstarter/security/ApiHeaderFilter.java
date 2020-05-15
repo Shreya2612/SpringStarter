@@ -31,9 +31,9 @@ public class ApiHeaderFilter extends GenericFilterBean {
             ApiResponse resp = ApiResponse.failResponse(Constants.ErrorCodes.CODE_AUTH_FAIL, "Please send a valid token.");
             response.setContentType("application/json");    //Serializing into byte streams
             response.setCharacterEncoding("UTF-8");
-            new GsonBuilder().create().toJson(resp, response.getWriter());  //Object(resp object)->Json String->writing into stream writer(getWriter)..Serializing
-            return;
-        }
+            new GsonBuilder().create().toJson(resp,response.getWriter());  //Object(resp object)->Json String->writing into stream writer(getWriter)..Serializing
+            return; //these 2 parameters means in first API response(resp) will be converted to json string and with getwriter() it will write string to stream writer.
+        } //this is the same process searialization process which internally happens when response is sent to @ResponseBody.
         filterChain.doFilter(servletRequest,servletResponse);
     }
 

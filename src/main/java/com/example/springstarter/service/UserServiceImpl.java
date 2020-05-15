@@ -1,9 +1,11 @@
 package com.example.springstarter.service;
 
+import com.example.springstarter.entity.AuthUser;
 import com.example.springstarter.entity.Users;
 import com.example.springstarter.model.ApiResponse;
 import com.example.springstarter.model.UserModel;
 import com.example.springstarter.model.response.UserResponse;
+import com.example.springstarter.repository.AuthUserRepository;
 import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
@@ -23,7 +25,8 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
-
+    @Autowired
+    private AuthUserRepository authUserRepository;
 
     @Override
     public ApiResponse addUser(UserModel model) {    // extra username is coming
@@ -35,28 +38,39 @@ public class UserServiceImpl implements UserService {
             users.setContact(Long.parseLong(model.getContact()));
             users.setMail(model.getMail());
             Users userOpt = this.usersRepository.save(users);
-            UserResponse ob = new UserResponse();
-            ob.setId(userOpt.getId());
-            return new ApiResponse(
-                    Arrays.asList(ob),
-                    Constants.MSG_CREATE_USER,
-                    Constants.MSG_STATUS_SUC,
-                    Constants.ErrorCodes.CODE_SUCCESS
-            );
+            try {
+                AuthUser authUser = new AuthUser();
+                authUser.setUserid(userOpt.getId());
+                authUser.setUserName(model.getUsername());
+                String password = model.getPassword();
+                String salt = Utility.generateSalt();
+                String hash = Utility.computeHash(password, salt);
+                authUser.setHash(hash);
+                authUser.setSalt(salt);
+                this.authUserRepository.save(authUser);
+
+                UserResponse ob = new UserResponse();  // created this because we don't want every field i.e my entire Entity to go in my api response.Mainly done because authname field was going null.
+                ob.setId(userOpt.getId()); //by this we just return one id to our user to show that user has been created.
+                return new ApiResponse(
+                        Arrays.asList(ob), //therefore by ob we have control over which fields are being send as response.
+                        Constants.MSG_CREATE_USER,
+                        Constants.MSG_STATUS_SUC,
+                        Constants.ErrorCodes.CODE_SUCCESS
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, Constants.MSG_ERR_GENERIC);
+            }
+
         }
-        ApiResponse response = new ApiResponse();
-        response.setStatus(Constants.MSG_STATUS_FAIL);
-        response.setMessage(Constants.MSG_CREATE_USER_VALID_FAIL);
-        response.setStatusCode(Constants.ErrorCodes.CODE_USER_CREATE_FAIL);
-        response.setData(Collections.emptyList());
-        return response;
+        return ApiResponse.failResponse(Constants.ErrorCodes.CODE_USER_CREATE_FAIL, Constants.MSG_CREATE_USER_VALID_FAIL);
     }
 
     @Override
-    public ApiResponse getUser(String firstName, Long id) {    // which firstName is this ..one which is coming from controller?
+    public ApiResponse getUser(String firstName, Long id) {    // one which is coming from controller-yes
         Optional<Users> userOpt = this.usersRepository.findOne(
                 (root, criteriaQuery, criteriaBuilder) -> {
-                    Predicate fPred = criteriaBuilder.equal(root.get("firstName"), firstName);  //this is the same firstName?
+                    Predicate fPred = criteriaBuilder.equal(root.get("firstName"), firstName);  //this green is column of my table.
                     Predicate idPred = criteriaBuilder.equal(root.get("id"), id);
                     return criteriaBuilder.and(fPred, idPred);
                 }

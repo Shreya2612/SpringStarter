@@ -36,7 +36,7 @@ public class UserController {
         return this.userService.getUser(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)   //currently not using this..written just to understand the @RequestParam parameter of GET
+    @RequestMapping(method = RequestMethod.GET)   //2 get apis written just to understand the @RequestParam parameter of GET.
     public ApiResponse getUserReqParam(@RequestParam("username") String username, @RequestParam("id") Long id) {
         return this.userService.getUser(username, id);
     }

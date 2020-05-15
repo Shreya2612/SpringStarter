@@ -26,8 +26,11 @@ public class AuthUser implements Serializable {
     @Column(name = "user_name", nullable = false)
     private String userName;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "hash", nullable = false)
+    private String hash;
+
+    @Column(name = "salt", nullable = false)
+    private String salt;
 
     
 }
