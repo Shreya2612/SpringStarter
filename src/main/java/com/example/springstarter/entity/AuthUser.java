@@ -32,5 +32,6 @@ public class AuthUser implements Serializable {
     @Column(name = "salt", nullable = false)
     private String salt;
 
-    
+
+
 }

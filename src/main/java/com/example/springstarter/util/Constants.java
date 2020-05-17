@@ -9,6 +9,9 @@ public interface Constants {
     String MSG_AUTH_NO_USER = "User doesn't exist";
     String MSG_AUTH_USER = "Login Successful";
     String MSG_PWD_FAIL = "Your Password is incorrect";
+    String MSG_PWD_UPDATE_FAIL = "Password can't be updated";
+    String MSG_PWD_UPDATE_FAIL2 = "New password and conform password do not match.";
+    String MSG_PWD_UPDATE_SUC = "Password updated successfully";
     String MSG_CREATE_USER = "User has been successfully created";
     String MSG_CREATE_USER_FAIL = "Sorry! User already exists";
     String MSG_CREATE_USER_VALID_FAIL = "Username should contain min. 8 characters," +
@@ -28,7 +31,7 @@ public interface Constants {
         int CODE_CREATE_SUCCESS = 201;
         int CODE_NO_DATA = 202;
 
-        int CODE_AUTH_SUCCESS = 901;
+        int CODE_AUTH_SUCCESS = 901;   //custom error codes
         int CODE_AUTH_FAIL = 902;
         int CODE_USER_CREATE_FAIL= 905;
         int CODE_GET_USER_FAIL= 906;

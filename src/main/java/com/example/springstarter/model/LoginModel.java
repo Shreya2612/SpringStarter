@@ -24,7 +24,6 @@ public class LoginModel{
     public String toString(){
         return
                 "LoginModel{" +
-                        "password = '" + password + '\'' +
                         ",username = '" + username + '\'' +
                         "}";
     }

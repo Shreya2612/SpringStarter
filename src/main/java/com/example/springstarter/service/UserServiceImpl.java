@@ -9,9 +9,11 @@ import com.example.springstarter.repository.AuthUserRepository;
 import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private AuthUserRepository authUserRepository;
 
     @Override
-    public ApiResponse addUser(UserModel model) {    // extra username is coming
+    public ApiResponse addUser(UserModel model) {    // username is coming as well
         boolean valid = Utility.userValidation(model);  // user validation part
         if (valid) {
             Users users = new Users();
@@ -37,28 +39,38 @@ public class UserServiceImpl implements UserService {
             users.setLastName(model.getLastName());
             users.setContact(Long.parseLong(model.getContact()));
             users.setMail(model.getMail());
-            Users userOpt = this.usersRepository.save(users);
+            Users savedUser = new Users();
+            AuthUser savedAuthUser = new AuthUser();
             try {
+                savedUser = this.usersRepository.save(users);
                 AuthUser authUser = new AuthUser();
-                authUser.setUserid(userOpt.getId());
+                authUser.setUserid(savedUser.getId());
                 authUser.setUserName(model.getUsername());
                 String password = model.getPassword();
                 String salt = Utility.generateSalt();
                 String hash = Utility.computeHash(password, salt);
                 authUser.setHash(hash);
                 authUser.setSalt(salt);
-                this.authUserRepository.save(authUser);
+                savedAuthUser = this.authUserRepository.save(authUser);
 
                 UserResponse ob = new UserResponse();  // created this because we don't want every field i.e my entire Entity to go in my api response.Mainly done because authname field was going null.
-                ob.setId(userOpt.getId()); //by this we just return one id to our user to show that user has been created.
+                ob.setId(savedUser.getId()); //by this we just return one id to our user to show that user has been created.
                 return new ApiResponse(
                         Arrays.asList(ob), //therefore by ob we have control over which fields are being send as response.
                         Constants.MSG_CREATE_USER,
                         Constants.MSG_STATUS_SUC,
                         Constants.ErrorCodes.CODE_SUCCESS
                 );
+            } catch (DataIntegrityViolationException e) {
+                LOG.error(e.getMessage());
+                if (savedUser.getId() == null) {
+                    return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "User already exists");
+                }
+                if (savedUser.getId() != null && savedAuthUser.getId() == null) {
+                    this.usersRepository.delete(savedUser);
+                    return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "Username is already taken");
+                }
             } catch (Exception e) {
-                e.printStackTrace();
                 return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, Constants.MSG_ERR_GENERIC);
             }
 
@@ -117,21 +129,21 @@ public class UserServiceImpl implements UserService {
 //                    Gson gson = new Gson();
 //                    String json =  gson.toJson(users);
 
-                    UserResponse ob = new UserResponse();
-                    ob.setId(users.getId());
-                    ob.setFirstName(users.getFirstName());
-                    ob.setLastName(users.getLastName());
-                    ob.setMail(users.getMail());
-                    ob.setContact(users.getContact());
+                            UserResponse ob = new UserResponse();
+                            ob.setId(users.getId());
+                            ob.setFirstName(users.getFirstName());
+                            ob.setLastName(users.getLastName());
+                            ob.setMail(users.getMail());
+                            ob.setContact(users.getContact());
 
-                    LOG.info(ob.toString());
+                            LOG.info(ob.toString());
 
-                    return new ApiResponse(
-                            Arrays.asList(ob),
-                            Constants.MSG_USER_FOUND,
-                            Constants.MSG_STATUS_SUC,
-                            Constants.ErrorCodes.CODE_SUCCESS);
-                    }
+                            return new ApiResponse(
+                                    Arrays.asList(ob),
+                                    Constants.MSG_USER_FOUND,
+                                    Constants.MSG_STATUS_SUC,
+                                    Constants.ErrorCodes.CODE_SUCCESS);
+                        }
                 )
                 .orElse(new ApiResponse(
                         Collections.emptyList(),
@@ -164,6 +176,11 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<Users> userOpt = this.usersRepository.findById(id);
             if (userOpt.isPresent()) {
+                Optional<AuthUser> authUser = this.authUserRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
+                    Predicate pred = criteriaBuilder.equal(root.get("userid"), id);
+                    return criteriaBuilder.and(pred);
+                });
+                authUser.ifPresent(user -> this.authUserRepository.delete(user));
                 this.usersRepository.deleteById(id);
                 Users users = userOpt.get();
                 UserResponse ob = new UserResponse();
@@ -200,7 +217,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse updateUser(Long id, UserModel model) {
         Optional<Users> usersOptional = usersRepository.findById(id);
-        return usersOptional.map(u -> {                         //converting/mapping Users to ApiResponse
+        return usersOptional.map(u -> {                   //converting/mapping Users to ApiResponse
             u.setFirstName(model.getFirstName());
             u.setLastName(model.getLastName());
             u.setContact(Long.parseLong(model.getContact()));

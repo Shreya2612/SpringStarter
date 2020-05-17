@@ -2,6 +2,7 @@ package com.example.springstarter.controller;
 
 import com.example.springstarter.model.ApiResponse;
 import com.example.springstarter.model.LoginModel;
+import com.example.springstarter.model.UpdatePasswordModel;
 import com.example.springstarter.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,4 +23,11 @@ public class LoginController {
     public ApiResponse login(@RequestBody LoginModel model) {
         return this.authService.login(model);
     }
+    @RequestMapping(value = "/{username}", method = RequestMethod.PATCH)
+    public ApiResponse updpwd(@RequestBody UpdatePasswordModel model, @PathVariable String username) {
+        return this.authService.updpwd(username, model);
+    }
+
+
+
 }

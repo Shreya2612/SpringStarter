@@ -13,8 +13,6 @@ public interface UserService {
     ApiResponse addUser(UserModel model);
     ApiResponse deleteUser(Long id);
     ApiResponse updateUser(Long id, UserModel model);
-
-
     ApiResponse getUserList();
 }
 

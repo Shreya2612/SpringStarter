@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ApiResponse {
-    private List<Object> data;
+    private List<Object> data = Collections.EMPTY_LIST;
     private String message;
     private String status;
     private int statusCode;
