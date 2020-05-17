@@ -23,7 +23,8 @@ public class LoginController {
     public ApiResponse login(@RequestBody LoginModel model) {
         return this.authService.login(model);
     }
-    @RequestMapping(value = "/{username}", method = RequestMethod.PATCH)
+
+    @RequestMapping(value = "/{username}", method = RequestMethod.PATCH)  //this value should not be verb
     public ApiResponse updpwd(@RequestBody UpdatePasswordModel model, @PathVariable String username) {
         return this.authService.updpwd(username, model);
     }

@@ -34,7 +34,8 @@ public class AuthServiceImpl implements AuthService {
             //here root is Entity, ctriteriaQuery is the query we are making and criteriaBuilder builds the criteria
            // and "userName" is coming from our DB and model. is the one which user is presently sending with request body i.e Login Model
            both are matched here for authentication
-           and in return criteriaBuilder is returning the already present info together with ".and" Predicate
+           and FINALLY UPSEROPT IS RETURNING "THE ENTIRE ROW" OF THAT PARTICULAR USERNAME
+            ADDING THAT PREDICATE VALUE DONE WITH THE HELP OF CRITERIA BUILDER.
          */
         });
 

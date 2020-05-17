@@ -8,6 +8,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+
+//TILL NOW NOT USED IN ENTIRE PROJECT THIS SPECIFICATION WHAT WE HAVE USED IS NORMAL IN-BUILT METHOD OF CLASS.
 public class UserSpecification implements Specification<Users> {
     private final SearchCriteria searchCriteria;
 
