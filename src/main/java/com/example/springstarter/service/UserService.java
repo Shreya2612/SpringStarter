@@ -1,10 +1,7 @@
 package com.example.springstarter.service;
 
-import com.example.springstarter.model.ApiResponse;
-import com.example.springstarter.model.UserModel;
-import com.example.springstarter.util.Constants;
-
-import java.util.Collections;
+import com.example.springstarter.model.response.ApiResponse;
+import com.example.springstarter.model.request.UserModel;
 
 public interface UserService {
 

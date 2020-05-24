@@ -1,18 +1,11 @@
 package com.example.springstarter.controller;
 
 
-import com.example.springstarter.model.ApiResponse;
-import com.example.springstarter.model.LoginModel;
-import com.example.springstarter.model.UserModel;
-import com.example.springstarter.repository.UserRepository;
-import com.example.springstarter.repository.UsersRepository;
-import com.example.springstarter.service.AuthService;
+import com.example.springstarter.model.response.ApiResponse;
+import com.example.springstarter.model.request.UserModel;
 import com.example.springstarter.service.UserService;
-import com.example.springstarter.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/user")

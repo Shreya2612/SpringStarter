@@ -1,8 +1,8 @@
 package com.example.springstarter.service;
 
-import com.example.springstarter.model.ApiResponse;
-import com.example.springstarter.model.LoginModel;
-import com.example.springstarter.model.UpdatePasswordModel;
+import com.example.springstarter.model.response.ApiResponse;
+import com.example.springstarter.model.request.LoginModel;
+import com.example.springstarter.model.request.UpdatePasswordModel;
 
 
 public interface AuthService {

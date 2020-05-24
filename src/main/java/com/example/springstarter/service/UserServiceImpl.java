@@ -2,14 +2,13 @@ package com.example.springstarter.service;
 
 import com.example.springstarter.entity.AuthUser;
 import com.example.springstarter.entity.Users;
-import com.example.springstarter.model.ApiResponse;
-import com.example.springstarter.model.UserModel;
+import com.example.springstarter.model.response.ApiResponse;
+import com.example.springstarter.model.request.UserModel;
 import com.example.springstarter.model.response.UserResponse;
 import com.example.springstarter.repository.AuthUserRepository;
 import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
-import java.sql.SQLException;
 import java.util.*;
 
 
@@ -41,7 +39,7 @@ public class UserServiceImpl implements UserService {
             users.setContact(Long.parseLong(model.getContact()));
             users.setMail(model.getMail());
             Users savedUser = new Users();  // these two limes of code were added just to make sure that if users are not being added to
-            AuthUser savedAuthUser = new AuthUser(); //AuthUser Table then they should also not be present in Users Table..done below(**)
+            AuthUser savedAuthUser = new AuthUser(); //AuthUser Table then they should also not be present in Users Table..done below(**) Eg: entering 2 users with same Username.
             try {
                 savedUser = this.usersRepository.save(users);
                 AuthUser authUser = new AuthUser();
@@ -62,16 +60,16 @@ public class UserServiceImpl implements UserService {
                         Constants.MSG_STATUS_SUC,
                         Constants.ErrorCodes.CODE_SUCCESS
                 );
-            } catch (DataIntegrityViolationException e) { //occurs only when my constraint is violated
-                LOG.error(e.getMessage());
+            } catch (DataIntegrityViolationException e) { //occurs only when my constraint  is violated(here 2 constraints that is id i.e. primary key should not be null which is managed by DB as we are not entering it:auto increment)
+                LOG.error(e.getMessage()); // and second is mail should be unique and hence we are handling that
 
                 if (savedUser.getId() == null) {
-                    return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "Mail id ady exists!");
+                    return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "Mail id already exists!");
                 }
                 if (savedUser.getId() != null && savedAuthUser.getId() == null) { //(**)
                     this.usersRepository.delete(savedUser);
                     return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "Username is already taken");
-                }
+                }//here passing username only in msg because that is my only constraint in Auth User Table and this exception occurs only when constraint is violated.
 
             } catch (Exception e) {
                 return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, Constants.MSG_ERR_GENERIC);
@@ -105,22 +103,6 @@ public class UserServiceImpl implements UserService {
                         Constants.ErrorCodes.CODE_GET_USER_FAIL
                 ));
 
-        /*User user = this.userRepository.findUserByUserName(username);
-        ApiResponse response =  new ApiResponse();
-        if(user.getUsername().isEmpty()){
-            response.setStatus(Constants.MSG_STATUS_FAIL);
-            response.setMessage(Constants.MSG_AUTH_NO_USER);
-            response.setStatusCode(Constants.ErrorCodes.CODE_GET_USER_FAIL);
-            response.setData(Collections.emptyList());
-        }
-        else{
-            response.setStatus(Constants.MSG_STATUS_SUC);
-            response.setMessage(Constants.MSG_USER_FOUND);
-            response.setStatusCode(Constants.ErrorCodes.CODE_SUCCESS);
-            response.setData(Arrays.asList(user));
-        }
-
-        return response;*/
 
     }
 
@@ -128,11 +110,17 @@ public class UserServiceImpl implements UserService {
     public ApiResponse getUser(Long id) {
         Optional<Users> userOpt = this.usersRepository.findById(id);
         if (userOpt.isPresent()) {
+/*
             Optional<AuthUser> authUserOpt = this.authUserRepository.findOne(
                     (root, criteriaQuery, criteriaBuilder) -> {
                         Predicate p = criteriaBuilder.equal(root.get("userid"), id);
                         return criteriaBuilder.and(p);
                     });
+
+            Now using @Query custom method so these JPA methods are not needed
+            Doing this becoz we want to get result by single query without hitting DB twice
+            as we were initially doing here so using JPQL but
+            note: we can't use them for some methods like delete api as delete can't be used with Join.*/
 
             return userOpt
                     .map(users -> {
@@ -145,7 +133,10 @@ public class UserServiceImpl implements UserService {
                                 ob.setLastName(users.getLastName());
                                 ob.setMail(users.getMail());
                                 ob.setContact(users.getContact());
-                                ob.setUserName(authUserOpt.get().getUserName());
+                                ob.setUserName(users.getAuthUser().getUserName());
+                                // Here: users.getAuthUser().getUserName() --> since AuthUsers is mapped in Users Entity as OnetoMany and both tables are now joined so directly users.getAuthUser() can be done.
+                                //users (mapped variable), getAuthUser from getter of Users Entity and getUsername from AuthUser Entity as
+                                // both table are now joined by JPQL and it works by using Entities only unlike SQL queries working on field names.
 
                                 LOG.info(ob.toString());
 
@@ -191,8 +182,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ApiResponse deleteUser(Long id) {
-
+    public ApiResponse deleteUser(Long id) { //delete can't be used with Joins in query so here JPQL can be used.
+                                             // and even if we use any query that will be complex and here simply we can entire delete data with JPA.
         try {
             Optional<Users> userOpt = this.usersRepository.findById(id);
             if (userOpt.isPresent()) {
@@ -241,9 +232,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse updateUser(Long id, UserModel model) {
         Optional<Users> usersOptional = usersRepository.findById(id);
-        return usersOptional.map(u -> {                   //converting/mapping Users to ApiResponse
-            u.setFirstName(model.getFirstName()); //.map will work only when c
-            u.setLastName(model.getLastName());
+        return usersOptional.map(u -> {            //converting/mapping Users to ApiResponse
+            u.setFirstName(model.getFirstName()); // here not checking isPresent because .map property works only when returned value is not null if it is then
+            u.setLastName(model.getLastName());  // it goes to .orElse block
             u.setContact(Long.parseLong(model.getContact()));
             u.setMail(model.getMail());
             Users saved = usersRepository.save(u);
@@ -261,7 +252,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse getUserList() {
 
-        Iterable<Users> users = this.usersRepository.findAll(Sort.by("id"));
+        //Iterable<Users> users = this.usersRepository.findAll(Sort.by("id")); --> JPA
+        Iterable<Users> users = this.usersRepository.getUserList(Sort.by("id")); //--> JPQL
         final List<UserResponse> userList = new ArrayList<>();
 
         users.forEach(u -> {
@@ -271,6 +263,7 @@ public class UserServiceImpl implements UserService {
             ob.setLastName(u.getLastName());
             ob.setMail(u.getMail());
             ob.setContact(u.getContact());
+            ob.setUserName(u.getAuthUser().getUserName());
             userList.add(ob);
         });
         // ArrayList<Users> sortedList = new ArrayList<>();

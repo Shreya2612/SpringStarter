@@ -1,4 +1,4 @@
-package com.example.springstarter.model;
+package com.example.springstarter.model.request;
 
 public class LoginModel{
     private String password;

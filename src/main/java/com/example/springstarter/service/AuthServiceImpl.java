@@ -1,9 +1,9 @@
 package com.example.springstarter.service;
 
 import com.example.springstarter.entity.AuthUser;
-import com.example.springstarter.model.ApiResponse;
-import com.example.springstarter.model.LoginModel;
-import com.example.springstarter.model.UpdatePasswordModel;
+import com.example.springstarter.model.response.ApiResponse;
+import com.example.springstarter.model.request.LoginModel;
+import com.example.springstarter.model.request.UpdatePasswordModel;
 import com.example.springstarter.repository.AuthUserRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;

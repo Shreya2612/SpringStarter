@@ -1,6 +1,6 @@
 package com.example.springstarter.util;
 
-import com.example.springstarter.model.UserModel;
+import com.example.springstarter.model.request.UserModel;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;

@@ -1,4 +1,4 @@
-package com.example.springstarter.model;
+package com.example.springstarter.model.response;
 
 import com.example.springstarter.util.Constants;
 

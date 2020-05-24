@@ -1,13 +1,11 @@
 package com.example.springstarter.security;
 
 
-import com.example.springstarter.model.ApiResponse;
+import com.example.springstarter.model.response.ApiResponse;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
 import com.google.gson.GsonBuilder;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;

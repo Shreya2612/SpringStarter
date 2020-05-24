@@ -1,7 +1,7 @@
 package com.example.springstarter.repository;
 
 import com.example.springstarter.entity.User;
-import com.example.springstarter.model.UserModel;
+import com.example.springstarter.model.request.UserModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
