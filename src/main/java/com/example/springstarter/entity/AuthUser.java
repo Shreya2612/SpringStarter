@@ -23,7 +23,7 @@ public class AuthUser implements Serializable {
     @Column(name = "userid", nullable = false)
     private Long userid;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
     @Column(name = "hash", nullable = false)

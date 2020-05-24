@@ -63,7 +63,7 @@ public class ApiResponse {
                         ",statusCode = '" + statusCode + '\'' +
                         "}";
     }
-
+// This is generic fail response.
     public static ApiResponse failResponse(int errorCode, String msg) {
         return new ApiResponse(
                 Collections.emptyList(),
@@ -73,7 +73,7 @@ public class ApiResponse {
         );
 
     }
-
+    // This is generic success response.
     public static ApiResponse successResponse(int errorCode, String msg, List<Object> data) {
         return new ApiResponse(
                 data,

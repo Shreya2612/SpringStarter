@@ -18,7 +18,7 @@ public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",insertable = false, nullable = false)
+    @Column(name = "id",insertable = false, nullable = false, unique = true)
     private Long id;
 
     @OneToOne(mappedBy = "users")

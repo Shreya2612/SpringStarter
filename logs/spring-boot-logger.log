@@ -2757,3 +2757,245 @@ javax.persistence.NonUniqueResultException: query did not return a unique result
 2020-05-17 21:01:56,351 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-7] ERROR: duplicate key value violates unique constraint "auth_user_uniqueindex"
   Detail: Key (user_name)=(shreya) already exists.
 2020-05-17 21:01:56,354 ERROR com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-7] could not execute statement; SQL [n/a]; constraint [auth_user_uniqueindex]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-19 13:40:12,597 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 16868 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-19 13:40:12,642 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-19 13:40:12,642 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-19 13:40:15,195 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-19 13:40:15,341 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 118ms. Found 2 JPA repository interfaces.
+2020-05-19 13:40:22,827 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-19 13:40:23,107 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-19 13:40:23,111 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-19 13:40:23,111 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-19 13:40:24,753 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-19 13:40:24,754 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 11792 ms
+2020-05-19 13:40:24,837 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-19 13:40:28,593 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-19 13:40:31,315 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-19 13:40:31,797 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-19 13:40:32,019 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-19 13:40:32,279 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-19 13:40:32,411 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-19 13:40:34,926 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-19 13:40:34,935 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-19 13:40:35,681 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-19 13:40:35,914 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-19 13:40:36,744 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-19 13:40:36,826 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-19 13:40:36,832 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 26.223 seconds (JVM running for 28.645)
+2020-05-24 17:55:57,601 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 17056 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 17:55:57,707 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 17:55:57,708 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 17:56:01,082 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 17:56:01,211 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 108ms. Found 2 JPA repository interfaces.
+2020-05-24 17:56:05,652 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 17:56:05,729 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 17:56:05,731 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 17:56:05,732 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 17:56:06,315 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 17:56:06,315 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 8351 ms
+2020-05-24 17:56:06,379 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 17:56:07,949 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 17:56:09,892 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 17:56:13,248 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 17:56:15,141 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 17:56:15,808 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 17:56:16,171 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 17:56:25,088 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 17:56:25,101 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 17:56:27,205 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 17:56:27,687 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 17:56:28,404 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 17:56:28,485 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 17:56:28,488 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 33.384 seconds (JVM running for 36.229)
+2020-05-24 17:57:49,302 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 17:57:49,307 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
+2020-05-24 17:57:49,326 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 19 ms
+2020-05-24 17:58:15,638 INFO com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-3] UserResponse{firstName = 'Shreya',lastName = 'Turior',mail = 'shreya@gmail.com',contact = '1234567890',id = '9'}
+2020-05-24 20:28:56,569 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 2844 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 20:28:56,616 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 20:28:56,620 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 20:29:17,107 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 20:29:17,455 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 330ms. Found 2 JPA repository interfaces.
+2020-05-24 20:29:23,232 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 20:29:23,316 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 20:29:23,321 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 20:29:23,322 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 20:29:23,993 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 20:29:23,993 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 23915 ms
+2020-05-24 20:29:24,105 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 20:29:26,187 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 20:29:27,972 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 20:29:30,859 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 20:29:31,708 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 20:29:32,456 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 20:29:33,116 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 20:29:41,617 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 20:29:41,623 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 20:29:44,031 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 20:29:44,698 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 20:29:46,566 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 20:29:46,611 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 20:29:46,621 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 62.339 seconds (JVM running for 66.022)
+2020-05-24 20:38:01,383 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 6548 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 20:38:01,390 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 20:38:01,396 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 20:38:03,506 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 20:38:03,756 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 228ms. Found 2 JPA repository interfaces.
+2020-05-24 20:38:04,873 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 20:38:04,885 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 20:38:04,887 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 20:38:04,888 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 20:38:05,047 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 20:38:05,047 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3526 ms
+2020-05-24 20:38:05,128 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 20:38:05,506 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 20:38:05,623 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 20:38:05,799 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 20:38:05,938 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 20:38:06,103 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 20:38:06,123 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 20:38:07,253 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 20:38:07,261 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 20:38:07,867 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 20:38:08,044 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 20:38:08,365 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 20:38:08,402 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 20:38:08,404 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 8.173 seconds (JVM running for 9.142)
+2020-05-24 20:38:54,116 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 20:38:54,116 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-05-24 20:38:54,137 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 20 ms
+2020-05-24 20:39:21,061 INFO com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-5] UserResponse{firstName = 'Shreya',lastName = 'Turior',mail = 'shreya@gmail.com',contact = '1234567890',id = '9'}
+2020-05-24 20:39:45,555 INFO com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-6] UserResponse{firstName = 'Divisha',lastName = 'Turior',mail = 'div@gmail.com',contact = '1234567890',id = '13'}
+2020-05-24 21:09:56,858 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 17360 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 21:09:56,863 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 21:09:56,863 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 21:09:58,467 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 21:09:58,596 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 116ms. Found 2 JPA repository interfaces.
+2020-05-24 21:09:59,720 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 21:09:59,735 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:09:59,737 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 21:09:59,737 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 21:09:59,910 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 21:09:59,910 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2922 ms
+2020-05-24 21:10:00,033 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 21:10:00,388 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 21:10:00,484 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 21:10:00,655 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 21:10:00,794 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 21:10:00,938 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 21:10:00,961 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 21:10:02,099 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 21:10:02,107 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 21:10:02,638 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 21:10:02,816 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 21:10:03,176 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:10:03,208 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 21:10:03,219 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 7.427 seconds (JVM running for 8.345)
+2020-05-24 21:11:01,768 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 21:11:01,774 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
+2020-05-24 21:11:01,800 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 26 ms
+2020-05-24 21:11:02,142 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-2] SQL Error: 0, SQLState: 23505
+2020-05-24 21:11:02,143 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-2] ERROR: duplicate key value violates unique constraint "users_uniqueindex"
+  Detail: Key (mail)=(div@gmail.com) already exists.
+2020-05-24 21:11:02,179 ERROR com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-2] could not execute statement; SQL [n/a]; constraint [users_uniqueindex]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-24 21:15:29,088 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 16008 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 21:15:29,094 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 21:15:29,095 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 21:15:30,945 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 21:15:31,066 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 106ms. Found 2 JPA repository interfaces.
+2020-05-24 21:15:32,196 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 21:15:32,207 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:15:32,207 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 21:15:32,207 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 21:15:32,693 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 21:15:32,693 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3499 ms
+2020-05-24 21:15:32,768 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 21:15:33,047 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 21:15:33,135 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 21:15:33,303 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 21:15:33,443 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 21:15:33,604 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 21:15:33,623 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 21:15:34,685 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 21:15:34,692 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 21:15:35,200 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 21:15:35,363 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 21:15:35,673 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:15:35,703 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 21:15:35,706 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 7.553 seconds (JVM running for 8.355)
+2020-05-24 21:15:47,676 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 21:15:47,676 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-05-24 21:15:47,703 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 27 ms
+2020-05-24 21:15:47,954 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-1] SQL Error: 0, SQLState: 23505
+2020-05-24 21:15:47,958 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-1] ERROR: duplicate key value violates unique constraint "users_uniqueindex"
+  Detail: Key (mail)=(div@gmail.com) already exists.
+2020-05-24 21:15:47,974 ERROR com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-1] could not execute statement; SQL [n/a]; constraint [users_uniqueindex]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-24 21:18:36,605 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 14108 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 21:18:36,614 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 21:18:36,614 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 21:18:37,909 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 21:18:38,074 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 141ms. Found 2 JPA repository interfaces.
+2020-05-24 21:18:39,843 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 21:18:39,857 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:18:39,858 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 21:18:39,859 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 21:18:40,065 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 21:18:40,073 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3336 ms
+2020-05-24 21:18:40,222 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 21:18:40,696 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 21:18:40,865 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 21:18:41,192 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 21:18:41,451 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 21:18:41,672 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 21:18:41,701 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 21:18:43,080 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 21:18:43,091 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 21:18:43,796 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 21:18:44,044 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 21:18:44,534 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:18:44,585 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 21:18:44,593 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 8.966 seconds (JVM running for 11.692)
+2020-05-24 21:18:53,183 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 21:18:53,183 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-05-24 21:18:53,206 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 22 ms
+2020-05-24 21:20:06,952 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-1] SQL Error: 0, SQLState: 23505
+2020-05-24 21:20:06,954 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-1] ERROR: duplicate key value violates unique constraint "users_uniqueindex"
+  Detail: Key (mail)=(div@gmail.com) already exists.
+2020-05-24 21:20:59,029 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m5s637ms907µs700ns).
+2020-05-24 21:20:59,029 ERROR com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-1] could not execute statement; SQL [n/a]; constraint [users_uniqueindex]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-24 21:21:48,080 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [SpringContextShutdownHook] Shutting down ExecutorService 'applicationTaskExecutor'
+2020-05-24 21:21:48,094 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringContextShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 21:21:48,106 INFO com.zaxxer.hikari.HikariDataSource [SpringContextShutdownHook] HikariPool-1 - Shutdown initiated...
+2020-05-24 21:21:48,188 INFO com.zaxxer.hikari.HikariDataSource [SpringContextShutdownHook] HikariPool-1 - Shutdown completed.
+2020-05-24 21:23:30,196 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringStarterApplication on turior with PID 11076 (E:\Shreya_spring\spring-starter\spring-starter\target\classes started by user in E:\Shreya_spring\spring-starter\spring-starter)
+2020-05-24 21:23:30,210 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.2.6.RELEASE, Spring v5.2.5.RELEASE
+2020-05-24 21:23:30,210 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-24 21:23:31,780 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-24 21:23:32,127 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 330ms. Found 2 JPA repository interfaces.
+2020-05-24 21:23:33,302 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-24 21:23:33,311 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:23:33,315 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-24 21:23:33,315 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-24 21:23:33,630 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-24 21:23:33,630 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3276 ms
+2020-05-24 21:23:33,712 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'apiHeaderFilter' configured for use
+2020-05-24 21:23:34,045 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-24 21:23:34,162 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-24 21:23:34,340 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-24 21:23:34,483 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-24 21:23:34,622 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-24 21:23:34,643 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-05-24 21:23:35,940 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-24 21:23:35,945 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-24 21:23:36,449 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-24 21:23:36,621 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-24 21:23:36,908 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2020-05-24 21:23:36,941 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-24 21:23:36,942 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringStarterApplication in 7.704 seconds (JVM running for 9.019)
+2020-05-24 21:24:07,139 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-24 21:24:07,143 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-05-24 21:24:07,164 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 21 ms
+2020-05-24 21:24:07,560 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-1] SQL Error: 0, SQLState: 23505
+2020-05-24 21:24:07,561 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-1] ERROR: duplicate key value violates unique constraint "users_uniqueindex"
+  Detail: Key (mail)=(div@gmail.com) already exists.
+2020-05-24 21:24:07,591 ERROR com.example.springstarter.service.UserServiceImpl [http-nio-8080-exec-1] could not execute statement; SQL [n/a]; constraint [users_uniqueindex]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement

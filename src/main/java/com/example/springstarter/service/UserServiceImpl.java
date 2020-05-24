@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
             users.setLastName(model.getLastName());
             users.setContact(Long.parseLong(model.getContact()));
             users.setMail(model.getMail());
-            Users savedUser = new Users();
-            AuthUser savedAuthUser = new AuthUser();
+            Users savedUser = new Users();  // these two limes of code were added just to make sure that if users are not being added to
+            AuthUser savedAuthUser = new AuthUser(); //AuthUser Table then they should also not be present in Users Table..done below(**)
             try {
                 savedUser = this.usersRepository.save(users);
                 AuthUser authUser = new AuthUser();
@@ -61,15 +62,17 @@ public class UserServiceImpl implements UserService {
                         Constants.MSG_STATUS_SUC,
                         Constants.ErrorCodes.CODE_SUCCESS
                 );
-            } catch (DataIntegrityViolationException e) {
+            } catch (DataIntegrityViolationException e) { //occurs only when my constraint is violated
                 LOG.error(e.getMessage());
+
                 if (savedUser.getId() == null) {
-                    return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "User already exists");
+                    return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "Mail id ady exists!");
                 }
-                if (savedUser.getId() != null && savedAuthUser.getId() == null) {
+                if (savedUser.getId() != null && savedAuthUser.getId() == null) { //(**)
                     this.usersRepository.delete(savedUser);
                     return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, "Username is already taken");
                 }
+
             } catch (Exception e) {
                 return ApiResponse.failResponse(Constants.ErrorCodes.CODE_FAIL, Constants.MSG_ERR_GENERIC);
             }
@@ -78,7 +81,7 @@ public class UserServiceImpl implements UserService {
         return ApiResponse.failResponse(Constants.ErrorCodes.CODE_USER_CREATE_FAIL, Constants.MSG_CREATE_USER_VALID_FAIL);
     }
 
-    @Override
+    @Override //Not using this one currently..in Postman  no request made for this
     public ApiResponse getUser(String firstName, Long id) {    // one which is coming from controller-yes
         Optional<Users> userOpt = this.usersRepository.findOne(
                 (root, criteriaQuery, criteriaBuilder) -> {
@@ -124,33 +127,51 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse getUser(Long id) {
         Optional<Users> userOpt = this.usersRepository.findById(id);
-        return userOpt
-                .map(users -> {
+        if (userOpt.isPresent()) {
+            Optional<AuthUser> authUserOpt = this.authUserRepository.findOne(
+                    (root, criteriaQuery, criteriaBuilder) -> {
+                        Predicate p = criteriaBuilder.equal(root.get("userid"), id);
+                        return criteriaBuilder.and(p);
+                    });
+
+            return userOpt
+                    .map(users -> {
 //                    Gson gson = new Gson();
 //                    String json =  gson.toJson(users);
 
-                            UserResponse ob = new UserResponse();
-                            ob.setId(users.getId());
-                            ob.setFirstName(users.getFirstName());
-                            ob.setLastName(users.getLastName());
-                            ob.setMail(users.getMail());
-                            ob.setContact(users.getContact());
+                                UserResponse ob = new UserResponse();
+                                ob.setId(users.getId());
+                                ob.setFirstName(users.getFirstName());
+                                ob.setLastName(users.getLastName());
+                                ob.setMail(users.getMail());
+                                ob.setContact(users.getContact());
+                                ob.setUserName(authUserOpt.get().getUserName());
 
-                            LOG.info(ob.toString());
+                                LOG.info(ob.toString());
 
-                            return new ApiResponse(
-                                    Arrays.asList(ob),
-                                    Constants.MSG_USER_FOUND,
-                                    Constants.MSG_STATUS_SUC,
-                                    Constants.ErrorCodes.CODE_SUCCESS);
-                        }
-                )
-                .orElse(new ApiResponse(
-                        Collections.emptyList(),
-                        Constants.MSG_AUTH_NO_USER,
-                        Constants.MSG_STATUS_FAIL,
-                        Constants.ErrorCodes.CODE_GET_USER_FAIL
-                ));
+                                return new ApiResponse(
+                                        Arrays.asList(ob),
+                                        Constants.MSG_USER_FOUND,
+                                        Constants.MSG_STATUS_SUC,
+                                        Constants.ErrorCodes.CODE_SUCCESS);
+                            }
+                    )
+
+
+                    .orElse(new ApiResponse(
+                            Collections.emptyList(),
+                            Constants.MSG_AUTH_NO_USER,
+                            Constants.MSG_STATUS_FAIL,
+                            Constants.ErrorCodes.CODE_GET_USER_FAIL
+                    ));
+        }
+        return new ApiResponse(
+                Collections.emptyList(),
+                Constants.MSG_AUTH_NO_USER,
+                Constants.MSG_STATUS_FAIL,
+                Constants.ErrorCodes.CODE_GET_USER_FAIL
+        );
+    }
         /*User user = this.userRepository.findUserById(id);
         ApiResponse response =  new ApiResponse();
         if(user.getUsername().isEmpty()){
@@ -168,7 +189,6 @@ public class UserServiceImpl implements UserService {
 
         return response;*/
 
-    }
 
     @Override
     public ApiResponse deleteUser(Long id) {
@@ -176,19 +196,23 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<Users> userOpt = this.usersRepository.findById(id);
             if (userOpt.isPresent()) {
-                Optional<AuthUser> authUser = this.authUserRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
+                Optional<AuthUser> authUserOpt = this.authUserRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
                     Predicate pred = criteriaBuilder.equal(root.get("userid"), id);
                     return criteriaBuilder.and(pred);
                 });
-                authUser.ifPresent(user -> this.authUserRepository.delete(user));
-                this.usersRepository.deleteById(id);
-                Users users = userOpt.get();
                 UserResponse ob = new UserResponse();
-                ob.setId(users.getId());
-                ob.setFirstName(users.getFirstName());
-                ob.setLastName(users.getLastName());
-                ob.setMail(users.getMail());
-                ob.setContact(users.getContact());
+                authUserOpt.ifPresent(user -> {
+                    this.authUserRepository.delete(user);
+                    this.usersRepository.deleteById(id); //deleteBy doesn't return anything so no ref. var. required here
+                    Users users = userOpt.get();
+                    AuthUser authUser = authUserOpt.get();
+                    ob.setId(users.getId());
+                    ob.setFirstName(users.getFirstName());
+                    ob.setLastName(users.getLastName());
+                    ob.setMail(users.getMail());
+                    ob.setContact(users.getContact());
+                    ob.setUserName(authUser.getUserName());
+                });
 
                 return new ApiResponse(
                         Arrays.asList(ob),
@@ -218,7 +242,7 @@ public class UserServiceImpl implements UserService {
     public ApiResponse updateUser(Long id, UserModel model) {
         Optional<Users> usersOptional = usersRepository.findById(id);
         return usersOptional.map(u -> {                   //converting/mapping Users to ApiResponse
-            u.setFirstName(model.getFirstName());
+            u.setFirstName(model.getFirstName()); //.map will work only when c
             u.setLastName(model.getLastName());
             u.setContact(Long.parseLong(model.getContact()));
             u.setMail(model.getMail());
@@ -239,6 +263,7 @@ public class UserServiceImpl implements UserService {
 
         Iterable<Users> users = this.usersRepository.findAll(Sort.by("id"));
         final List<UserResponse> userList = new ArrayList<>();
+
         users.forEach(u -> {
             UserResponse ob = new UserResponse();
             ob.setId(u.getId());

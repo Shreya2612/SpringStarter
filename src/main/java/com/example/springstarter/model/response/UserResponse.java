@@ -19,6 +19,9 @@ public class UserResponse{
 	@SerializedName("id")
 	private Long id;
 
+	@SerializedName("userName")
+	private String userName;
+
 	public void setFirstName(String firstName){
 		this.firstName = firstName;
 	}
@@ -70,4 +73,12 @@ public class UserResponse{
 			",id = '" + id + '\'' + 
 			"}";
 		}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }
