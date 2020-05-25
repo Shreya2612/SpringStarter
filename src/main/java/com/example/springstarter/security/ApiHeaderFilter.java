@@ -23,7 +23,7 @@ public class ApiHeaderFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String token = request.getHeader("x-auth-token");
+        String token = request.getHeader("x-auth-token"); //here x-auth token can be considered as key and token as it's value and that value will be String always.
 
         if (!isValidToken(token)) {
             ApiResponse resp = ApiResponse.failResponse(Constants.ErrorCodes.CODE_AUTH_FAIL, "Please send a valid token.");

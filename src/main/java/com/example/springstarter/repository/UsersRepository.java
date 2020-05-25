@@ -31,6 +31,9 @@ public interface UsersRepository extends CrudRepository<Users, Long>, JpaSpecifi
     List<Users> getUserList(Sort sort);
 
 
+    @Query("select u.firstName, u.id, u.lastName, u.mail, u.contact, a.userName from Users u join AuthUser a on u.id = a.userid where u.id in (select min(d.id) from Users d group by d.firstName)")
+    List<Object[]> getUserListByDistinctFirstName(Sort sort);
+
 
 }
 // 2 methods of doing @Query : by nativeQuery and JPQL , JPQL has added adv. like sorting and Pagination over nativeQuery Method.

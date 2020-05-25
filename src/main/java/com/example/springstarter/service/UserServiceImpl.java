@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse deleteUser(Long id) { //delete can't be used with Joins in query so here JPQL can be used.
-                                             // and even if we use any query that will be complex and here simply we can entire delete data with JPA.
+        // and even if we use any query that will be complex and here simply we can entire delete data with JPA.
         try {
             Optional<Users> userOpt = this.usersRepository.findById(id);
             if (userOpt.isPresent()) {
@@ -252,18 +252,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse getUserList() {
 
-        //Iterable<Users> users = this.usersRepository.findAll(Sort.by("id")); --> JPA
-        Iterable<Users> users = this.usersRepository.getUserList(Sort.by("id")); //--> JPQL
+        Iterable<Object[]> users = this.usersRepository.getUserListByDistinctFirstName(Sort.by("id"));
+
+        //Iterable<Users> users = this.usersRepository.getUserList(Sort.by("id")); //--> JPQL
         final List<UserResponse> userList = new ArrayList<>();
 
         users.forEach(u -> {
             UserResponse ob = new UserResponse();
-            ob.setId(u.getId());
-            ob.setFirstName(u.getFirstName());
-            ob.setLastName(u.getLastName());
-            ob.setMail(u.getMail());
-            ob.setContact(u.getContact());
-            ob.setUserName(u.getAuthUser().getUserName());
+            ob.setId((long) u[1]);
+            ob.setFirstName((String) u[0]);
+            ob.setLastName((String) u[2]);
+            ob.setMail((String) u[3]);
+            ob.setContact((Long) u[4]);
+            ob.setUserName((String) u[5]);
             userList.add(ob);
         });
         // ArrayList<Users> sortedList = new ArrayList<>();
