@@ -7,6 +7,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,6 +26,9 @@ public class Users implements Serializable {
     @OneToOne(mappedBy = "users")
     private AuthUser authUser;
 
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private Set<Contact> contactTable;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -33,7 +38,7 @@ public class Users implements Serializable {
     @Column(name = "contact")
     private Long contact;
 
-    @Column(name = "mail")
+    @Column(name = "mail", nullable = false, unique = true)
     private String mail;
 
     

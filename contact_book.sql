@@ -22,8 +22,7 @@ create table auth_user
 (
 id         bigserial,
 userid     bigint not null unique constraint id references users,
-user_name  varchar(50) not null unique,
-password   text
+user_name  varchar(50) not null unique
 );
 
 alter table auth_user add constraint auth_user_pk primary key (id, userid, user_name);

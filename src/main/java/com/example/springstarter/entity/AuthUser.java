@@ -20,7 +20,7 @@ public class AuthUser implements Serializable {
     @JoinColumn(name = "userid", referencedColumnName = "id", insertable=false,updatable = false)
     private Users users;
 
-    @Column(name = "userid", nullable = false)
+    @Column(name = "userid", nullable = false, unique = true)
     private Long userid;
 
     @Column(name = "user_name", nullable = false, unique = true)
