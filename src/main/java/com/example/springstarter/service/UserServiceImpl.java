@@ -1,11 +1,15 @@
 package com.example.springstarter.service;
 
 import com.example.springstarter.entity.AuthUser;
+import com.example.springstarter.entity.Contact;
+import com.example.springstarter.entity.ContactList;
 import com.example.springstarter.entity.Users;
 import com.example.springstarter.model.response.ApiResponse;
 import com.example.springstarter.model.request.UserModel;
 import com.example.springstarter.model.response.UserResponse;
 import com.example.springstarter.repository.AuthUserRepository;
+import com.example.springstarter.repository.ContactListRepository;
+import com.example.springstarter.repository.ContactRepository;
 import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
@@ -23,11 +27,16 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);  //for logger
+
     @Autowired
     private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
     @Autowired
     private AuthUserRepository authUserRepository;
+    @Autowired
+    private ContactListRepository contactListRepository;
+    @Autowired
+    private ContactRepository contactRepository;
 
     @Override
     public ApiResponse addUser(UserModel model) {    // username is coming as well
@@ -288,5 +297,103 @@ public class UserServiceImpl implements UserService {
         /*List<String> list = Arrays.asList("Shreya", "divisha", "Turior");
         list.stream().collect(Collectors.joining(":"));*/
     }
+
+
+    @Override
+    public ApiResponse getContact(Long id) {
+
+        try {
+            Iterable<Object[]> list = this.contactRepository.getContact(id); //--> JPQL
+            final List<UserResponse> userList = new ArrayList<>();
+
+            list.forEach(c -> {
+                UserResponse ob = new UserResponse();
+                ob.setContactId((Long) c[0]);
+                ob.setFirstName((String) c[1]);
+                ob.setLastName((String) c[2]);
+                ob.setMail((String) c[4]);
+                ob.setContact((Long) c[3]);
+
+                userList.add(ob);
+            });
+
+                if (userList.isEmpty()) {
+                    return ApiResponse.successResponse(Constants.ErrorCodes.CODE_NO_DATA,
+                            Constants.MSG_NO_DATA,
+                            Collections.EMPTY_LIST);
+                }
+                return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS,
+                        Constants.MSG_STATUS_SUC,
+                        new ArrayList<>(userList));
+            }
+
+        catch(Exception e){
+                e.printStackTrace();
+                return new ApiResponse(
+                        Collections.emptyList(),
+                        Constants.MSG_ERR_GENERIC,
+                        Constants.MSG_STATUS_FAIL,
+                        Constants.ErrorCodes.CODE_FAIL);
+            }
+
+    }
+
+    @Override
+    public ApiResponse addContactList(Long id, UserModel model)   // id coming here is id(PK) of Users table or userid of auth table
+    {
+        try {
+            Optional<Users> optUser = this.usersRepository.findById(id);
+
+            if (optUser.isPresent()) {
+                ContactList contactList = new ContactList();
+                contactList.setFirstName(model.getFirstName());
+                contactList.setLastName(model.getLastName());
+                contactList.setNumber(Long.parseLong(model.getContact()));
+                contactList.setMail(model.getMail());
+
+                ContactList savedContactList = new ContactList();
+                savedContactList = this.contactListRepository.save(contactList); //user created in ContactList table
+
+                Contact contact = new Contact();   //to set contactid in Contact table
+                contact.setContactid(savedContactList.getId());
+                Contact savedContactid = new Contact();
+                savedContactid = this.contactRepository.save(contact);
+
+            /* Optional<AuthUser> authUserOpt = this.authUserRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
+                    Predicate pred = criteriaBuilder.equal(root.get("userid"), id);
+                    return criteriaBuilder.and(pred);
+                }); */
+
+                contact.setUserid(optUser.get().getId());
+                Contact savedContactUserid = new Contact();
+                savedContactUserid = this.contactRepository.save(contact); //to set userid in Contact table
+
+                UserResponse res = new UserResponse();
+                res.setId(savedContactList.getId());
+
+                return ApiResponse.successResponse(
+                        Constants.ErrorCodes.CODE_CREATE_SUCCESS,
+                        "User added in Contact List",
+                        Arrays.asList(res));
+
+            }
+            return new ApiResponse(
+                    Collections.emptyList(),
+                    Constants.MSG_AUTH_NO_USER,
+                    Constants.MSG_STATUS_FAIL,
+                    Constants.ErrorCodes.CODE_FAIL);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResponse(
+                    Collections.emptyList(),
+                    Constants.MSG_ERR_GENERIC,
+                    Constants.MSG_STATUS_FAIL,
+                    Constants.ErrorCodes.CODE_FAIL
+            );
+        }
+    }
+
+
 }
 

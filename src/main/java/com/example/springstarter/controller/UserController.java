@@ -36,16 +36,27 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ApiResponse delete(@PathVariable Long id) {
-        return this.userService.deleteUser(id);
+               return this.userService.deleteUser(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ApiResponse update(@PathVariable Long id,@RequestBody UserModel model) {                   // update method here is called Handler
+    public ApiResponse update(@PathVariable Long id,@RequestBody UserModel model) {  // update method here is called Handler
         return this.userService.updateUser(id,model);
     }
 
     @GetMapping(value = "/list")
     public ApiResponse getList() {
         return this.userService.getUserList();
+
+    }
+
+    @GetMapping(value = "/contact/{id}")  //here id being passed is id of Users table
+    public ApiResponse getContact(@PathVariable Long id){
+        return this.userService.getContact(id);
+    }
+
+    @PostMapping(value = "/contactlist/{id}") // id being passed here is id(PK) of Users table or userid of auth table
+    public ApiResponse createContactList(@PathVariable Long id,@RequestBody UserModel model){
+        return this.userService.addContactList(id , model);
     }
 }

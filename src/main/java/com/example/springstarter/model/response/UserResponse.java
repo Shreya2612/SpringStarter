@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserResponse{
 
-	@SerializedName("firstName")
+	@SerializedName("firstName") // with the help of Serialized it will work on the name written in quotes irrespective of what is coming
 	private String firstName;
 
 	@SerializedName("lastName")
@@ -21,6 +21,9 @@ public class UserResponse{
 
 	@SerializedName("userName")
 	private String userName;
+
+	@SerializedName("contactId")
+	private Long contactId;
 
 	public void setFirstName(String firstName){
 		this.firstName = firstName;
@@ -80,5 +83,13 @@ public class UserResponse{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Long getContactId() {
+		return contactId;
+	}
+
+	public void setContactId(Long contactId) {
+		this.contactId = contactId;
 	}
 }

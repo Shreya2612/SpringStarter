@@ -11,5 +11,9 @@ public interface UserService {
     ApiResponse deleteUser(Long id);
     ApiResponse updateUser(Long id, UserModel model);
     ApiResponse getUserList();
+
+
+    ApiResponse addContactList(Long id , UserModel model);
+    ApiResponse getContact(Long id);
 }
 

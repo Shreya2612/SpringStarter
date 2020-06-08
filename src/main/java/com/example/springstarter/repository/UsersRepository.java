@@ -20,14 +20,11 @@ public interface UsersRepository extends CrudRepository<Users, Long>, JpaSpecifi
              nativeQuery = true
              */
             //JPQL:
-            value = "select u , a from Users u join AuthUser a on u.id = a.userid where u.id = ?1"
-    )
-
+            value = "select u , a from Users u join AuthUser a on u.id = a.userid where u.id = ?1")
     Users getUser(Long id);
 
-    @Query(
-            value = "select u , a from Users u join AuthUser a on u.id = a.userid "
-    )
+
+    @Query(value = "select u , a from Users u join AuthUser a on u.id = a.userid ")
     List<Users> getUserList(Sort sort);
 
 
@@ -35,10 +32,14 @@ public interface UsersRepository extends CrudRepository<Users, Long>, JpaSpecifi
     List<Object[]> getUserListByDistinctFirstName(Sort sort);
 
 
-}
-// 2 methods of doing @Query : by nativeQuery and JPQL , JPQL has added adv. like sorting and Pagination over nativeQuery Method.
+}// 2 methods of doing @Query : by nativeQuery and JPQL , JPQL has added adv. like sorting and Pagination over nativeQuery Method.
 
 /*
 THESE CRUD REPOSITORIES ARE BEING USED IN ENTIRE PROJ. AFTER INTRO OF SPRING DATA JPA
 1.USERSREPOSITORY INTERFACE
-2.AUTHUSERREPOSITORY INTERFACE*/
+2.AUTHUSERREPOSITORY INTERFACE
+3.CONTACTLIST REPOSITORY
+4.CONTACT REPOSITORY
+
+When earlier used Map as DB then used UserRepository and LoginRepository and its implementations*/
+

@@ -19,7 +19,8 @@ public interface Constants {
     String MSG_USER_FOUND = "User Found !";
     String MSG_USER_DELETE = "User Successfully deleted !";
     String MSG_USER_UPDATE = "User Updated Successfully !";
-
+    String MSG_CONTACT_ENTRY_FAIL = "Sorry! User not added to Contact Table";
+    String MSG_CONTACTLIST_ENTRY_FAIL = "Sorry! User not added to Contact List";
     String MSG_NO_DATA = "No data found";
 
 

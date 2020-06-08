@@ -50,7 +50,7 @@ public class ApiResponse {
         this.statusCode = statusCode;
     }
 
-    public ApiResponse() {              //since we created the above constructor ,creating this default constructor was necessary.
+    public ApiResponse() {  //since we created the above constructor ,creating this default constructor was necessary.
     }
 
     @Override

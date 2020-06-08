@@ -1,10 +1,13 @@
 package com.example.springstarter.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
+@Getter
+@Setter
 @Data
 @Table(name = "contact_list")
 @Entity
@@ -17,7 +20,8 @@ public class ContactList implements Serializable {
     private Long id;
 
     @OneToOne(mappedBy = "contactList")
-    private Contact contact;
+    private Contact contact;    // here for ContactList this instance of Contact Entity i.e contact is like a java class field
+                               // depicting one-to-one mapping "
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
