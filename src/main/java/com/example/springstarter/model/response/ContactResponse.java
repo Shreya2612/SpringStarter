@@ -2,7 +2,7 @@ package com.example.springstarter.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserResponse {
+public class ContactResponse {
 
     @SerializedName("firstName")
     // with the help of Serialized it will work on the name written in quotes irrespective of what is coming
@@ -20,8 +20,8 @@ public class UserResponse {
     @SerializedName("id")
     private Long id;
 
-    @SerializedName("userName")
-    private String userName;
+    @SerializedName("contactId")
+    private Long contactId;
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -75,11 +75,11 @@ public class UserResponse {
                         "}";
     }
 
-    public String getUserName() {
-        return userName;
+    public Long getContactId() {
+        return contactId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 }

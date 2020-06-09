@@ -50,13 +50,5 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "/contact/{id}")  //here id being passed is id of Users table
-    public ApiResponse getContact(@PathVariable Long id){
-        return this.userService.getContact(id);
-    }
 
-    @PostMapping(value = "/contactlist/{id}") // id being passed here is id(PK) of Users table or userid of auth table
-    public ApiResponse createContactList(@PathVariable Long id,@RequestBody UserModel model){
-        return this.userService.addContactList(id , model);
-    }
 }

@@ -13,7 +13,5 @@ public interface UserService {
     ApiResponse getUserList();
 
 
-    ApiResponse addContactList(Long id , UserModel model);
-    ApiResponse getContact(Long id);
 }
 

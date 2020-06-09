@@ -1,3 +1,4 @@
+// This is no more being used after introduction of JPA(Crud Repo.), was using this when HashMap was used for storing data.
 package com.example.springstarter.entity;
 
 public class User {
