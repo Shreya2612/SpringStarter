@@ -21,27 +21,28 @@ public class UserController {
     }
 
     /*
-    * Path Parameter: /user/{id} @PathVariable
-    * Request Parameter: /user?id=2&name=Shivam  @RequestParam
-    * */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+     * Path Parameter: /user/{id} @PathVariable
+     * Request Parameter: /user?id=2&name=Shivam  @RequestParam
+     * */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)  //get user by id
     public ApiResponse get(@PathVariable Long id) {
         return this.userService.getUser(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)   //2 get apis written just to understand the @RequestParam parameter of GET.
+    @RequestMapping(method = RequestMethod.GET) // get user by username
+    //2 get apis written just to understand the @RequestParam parameter of GET.
     public ApiResponse getUserReqParam(@RequestParam("username") String username, @RequestParam("id") Long id) {
         return this.userService.getUser(username, id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ApiResponse delete(@PathVariable Long id) {
-               return this.userService.deleteUser(id);
+    public ApiResponse delete(@PathVariable("id")Long id) {
+        return this.userService.deleteUser(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ApiResponse update(@PathVariable Long id,@RequestBody UserModel model) {  // update method here is called Handler
-        return this.userService.updateUser(id,model);
+    public ApiResponse update(@PathVariable Long id, @RequestBody UserModel model) {  // update method here is called Handler
+        return this.userService.updateUser(id, model);
     }
 
     @GetMapping(value = "/list")

@@ -33,10 +33,7 @@ public class UserServiceImpl implements UserService {
     private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
     @Autowired
     private AuthUserRepository authUserRepository;
-    @Autowired
-    private ContactListRepository contactListRepository;
-    @Autowired
-    private ContactRepository contactRepository;
+
 
     @Override
     public ApiResponse addUser(UserModel model) {    // username is coming as well
@@ -249,6 +246,7 @@ public class UserServiceImpl implements UserService {
             Users saved = usersRepository.save(u);
             UserResponse ob = new UserResponse();
             ob.setId(saved.getId());
+
             return ApiResponse.successResponse(Constants.ErrorCodes.CODE_SUCCESS, Constants.MSG_USER_UPDATE, Arrays.asList(ob));
         }).orElse(ApiResponse.failResponse(Constants.ErrorCodes.CODE_GET_USER_FAIL, Constants.MSG_AUTH_NO_USER));
 
@@ -262,7 +260,7 @@ public class UserServiceImpl implements UserService {
     public ApiResponse getUserList() {
 
         Iterable<Object[]> users = this.usersRepository.getUserListByDistinctFirstName(Sort.by("id"));
-
+         // BY JPA kept in Scratch file.
         //Iterable<Users> users = this.usersRepository.getUserList(Sort.by("id")); //--> JPQL
         final List<UserResponse> userList = new ArrayList<>();
 

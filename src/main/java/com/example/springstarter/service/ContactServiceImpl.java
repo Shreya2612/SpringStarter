@@ -12,12 +12,11 @@ import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.criteria.Predicate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,16 +34,16 @@ public class ContactServiceImpl implements ContactService {
     public ApiResponse getContactList(Long userId) {
 
         try {
-            Optional<Users> optUser = this.usersRepository.findById(userId);
+            Optional<Users> optUser = this.usersRepository.findById(userId); //to chk whether the coming userid is userid of authorized user or not, so if it is here in users table that means it has to be there in Auth user table as well becoz when we are saving a users info in Users table that time only it is being saved in Auth user table as well(refer UserServiceImpl->create user).
 
             if (!optUser.isPresent()) {
                 return ApiResponse.failResponse(
                         Constants.ErrorCodes.CODE_FAIL,
-                        Constants.MSG_AUTH_NO_USER
+                        Constants.MSG_AUTH_NO_USER  //user is not Authorized user
                 );
             }
-
-            Iterable<Object[]> list = this.contactRepository.getContact(userId); //--> JPQL
+            // if Authorized user then
+            Iterable<Object[]> list = this.contactRepository.getContact(userId , Sort.by("userid")); //--> JPQL(Query in Repository)
             final List<ContactResponse> userList = new ArrayList<>();
 
             list.forEach(c -> {
@@ -77,8 +76,8 @@ public class ContactServiceImpl implements ContactService {
 
     }
 
-    @Override
-    public ApiResponse addContacts(Long userId, List<ContactModel> models)   // id coming here is id(PK) of Users table or userid of auth table
+    @Override  //creating new multiple/single contact
+    public ApiResponse addContacts(Long userId, List<ContactModel> models) // id coming here is id(PK) of Users table or userid of auth table
     {
         try {
             Optional<Users> optUser = this.usersRepository.findById(userId);
@@ -89,7 +88,7 @@ public class ContactServiceImpl implements ContactService {
                     ContactList contactListTbl = new ContactList();
                     contactListTbl.setFirstName(model.getFirstName());
                     contactListTbl.setLastName(model.getLastName());
-                    contactListTbl.setNumber(Long.parseLong(model.getContact()));
+                    contactListTbl.setNumber(model.getContact());
                     contactListTbl.setMail(model.getMail());
 
                     contactRows.add(contactListTbl);
@@ -107,7 +106,7 @@ public class ContactServiceImpl implements ContactService {
 
 
                 Iterable<Contact> savedContacts = this.contactRepository.saveAll(contactTblList);
-                List<ContactResponse> res = Utility.stream(savedContacts).map(contact ->{
+                List<ContactResponse> res = Utility.stream(savedContacts).map(contact -> {
                     ContactResponse r = new ContactResponse();
                     r.setId(contact.getId());
                     return r;
@@ -136,5 +135,147 @@ public class ContactServiceImpl implements ContactService {
             );
         }
     }
+
+    @Override
+    public ApiResponse deleteContacts(List<Long> userId) { //can deleteAll be used here
+
+        try {
+            Iterable<ContactList> contactList = this.contactListRepository.findAllById(userId);
+
+            contactList.forEach(contact -> {
+
+                Optional<Contact> contactOpt = this.contactRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
+                    Predicate p = criteriaBuilder.equal(root.get("contactid"), contact);
+                    return criteriaBuilder.and(p);
+                });
+                contactOpt.ifPresent(c -> {
+                    this.contactRepository.delete(c);
+                });
+                this.contactListRepository.delete(contact);
+            });
+
+            List<ContactResponse> deletedContacts = Utility.stream(contactList).map(contact -> {
+                ContactResponse res = new ContactResponse();
+                res.setId(contact.getId());
+                res.setFirstName(contact.getFirstName());
+                res.setLastName(contact.getLastName());
+                res.setMail(contact.getMail());
+                res.setContact(contact.getNumber());
+                return res;
+            }).collect(Collectors.toList());
+
+
+            return ApiResponse.successResponse(
+                    Constants.ErrorCodes.CODE_SUCCESS,
+                    Constants.MSG_USER_DELETE,
+                    new ArrayList<>(deletedContacts));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResponse(
+                    Collections.emptyList(),
+                    Constants.MSG_ERR_GENERIC,
+                    Constants.MSG_STATUS_FAIL,
+                    Constants.ErrorCodes.CODE_FAIL
+            );
+        }
+
+
+    }
+
+        /*  TO DELETE SINGLE USER WITH USERID IN CONTACTLIST TABLE
+        Optional<ContactList> contactListOpt = this.contactListRepository.findById(userId);
+
+        if (contactListOpt.isPresent()) {
+           // ContactList c = contactList.get(); any problem if I don't write this line
+
+            Optional<Contact> contactOpt = this.contactRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
+                Predicate p = criteriaBuilder.equal(root.get("contactid"), userId);
+                return criteriaBuilder.and(p);
+            });
+            contactOpt.ifPresent(c -> {  this.contactRepository.delete(c); });
+            //not working if don't use Lambda here written below?
+            // contactOpt.ifPresent(this.contactRepository.delete(contactOpt.get());---not working??
+            this.contactListRepository.deleteById(userId); //can also be deleted with contactListOpt.get()
+            ContactList contactList = contactListOpt.get();
+            ContactResponse res = new ContactResponse();
+            res.setId(contactList.getId());
+            res.setFirstName(contactList.getFirstName());
+            res.setLastName(contactList.getLastName());
+            res.setMail(contactList.getMail());
+            res.setContact(contactList.getNumber());
+
+            return ApiResponse.successResponse(
+                   Constants.ErrorCodes.CODE_SUCCESS,
+                   Constants.MSG_USER_DELETE,
+                   Arrays.asList(res));
+
+        }
+        return new ApiResponse(
+                Collections.EMPTY_LIST,
+                Constants.MSG_AUTH_NO_USER,
+                Constants.MSG_STATUS_FAIL,
+                Constants.ErrorCodes.CODE_FAIL);}*/
+
+
+    @Override
+    public ApiResponse updateContactList(Long userId, ContactModel model) {
+
+        Optional<ContactList> contactListOpt = this.contactListRepository.findById(userId);
+        try {
+            contactListOpt.ifPresent(c -> {
+                //ContactList contactList = new ContactList() /any issue if I don't do this?
+                c.setFirstName(model.getFirstName());
+                c.setLastName(model.getLastName());
+                c.setMail(model.getMail());
+                c.setNumber(model.getContact());
+            });
+
+            ContactList savedContactList = this.contactListRepository.save(contactListOpt.get());
+            ContactResponse res = new ContactResponse();
+            res.setId(savedContactList.getId());
+            return ApiResponse.successResponse(
+                    Constants.ErrorCodes.CODE_SUCCESS,
+                    Constants.MSG_USER_UPDATE,
+                    Arrays.asList(res));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResponse(
+                    Collections.emptyList(),
+                    Constants.MSG_ERR_GENERIC,
+                    Constants.MSG_STATUS_FAIL,
+                    Constants.ErrorCodes.CODE_FAIL);
+
+        }
+
+
+        //how to deal with situation when ifPresent() is wrong ??
+    }
+
+    @Override
+    public ApiResponse getContact(Long userId) {
+
+        Optional<ContactList> contactListOpt = this.contactListRepository.findById(userId);
+        if (contactListOpt.isPresent()) {
+            ContactList contactList = contactListOpt.get();
+            ContactResponse res = new ContactResponse();
+            res.setFirstName(contactList.getFirstName());
+            res.setLastName(contactList.getLastName());
+            res.setMail(contactList.getMail());
+            res.setContact(contactList.getNumber());
+
+            return new ApiResponse(
+                    Arrays.asList(res),
+                    Constants.MSG_USER_FOUND,
+                    Constants.MSG_STATUS_SUC,
+                    Constants.ErrorCodes.CODE_SUCCESS);
+        }
+        return new ApiResponse(
+                Collections.emptyList(),
+                Constants.MSG_AUTH_NO_USER,
+                Constants.MSG_STATUS_FAIL,
+                Constants.ErrorCodes.CODE_GET_USER_FAIL);
+    }
+
 
 }

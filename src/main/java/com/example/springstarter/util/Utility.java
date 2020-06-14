@@ -69,7 +69,7 @@ public interface Utility {
         return bytesToHex(salt); //salt will always be a bytes so converting to hexadecimal string.
     }
 
-    public static <T> Stream<T> stream(Iterable<T> iterable) {
+    public static <T> Stream<T> stream(Iterable<T> iterable) {  //this was custom stream made as per requirement(Shivam's) used in ContactServiceImpl
         return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(
                         iterable.iterator(),
