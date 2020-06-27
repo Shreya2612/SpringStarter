@@ -4,6 +4,9 @@ package com.example.springstarter.controller;
 import com.example.springstarter.model.request.ContactModel;
 import com.example.springstarter.model.response.ApiResponse;
 import com.example.springstarter.service.ContactService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +33,10 @@ public class ContactController {
         return this.contactService.addContacts(userId, model);
     }
 
-    @DeleteMapping(value="/{userId}") //Deletes the Users of ContactList as well as its corresponding mapping in Contact table by its ContactID.
-    public ApiResponse delete(@PathVariable("userId") List<Long> userId) {
-        return this.contactService.deleteContacts(userId);
+     @DeleteMapping(value="/{userId}") //Deletes the Users of ContactList as well as its corresponding mapping in Contact table by its ContactID.
+    public ApiResponse delete(@RequestBody List<Long> ids) {
+        //List<Long> ids = new Gson().fromJson(body, new TypeToken<List<Long>>(){}.getType());
+        return this.contactService.deleteContacts(ids);
     }
 
     @PutMapping(value="/{userId}")

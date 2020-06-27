@@ -43,7 +43,7 @@ public class ContactServiceImpl implements ContactService {
                 );
             }
             // if Authorized user then
-            Iterable<Object[]> list = this.contactRepository.getContact(userId , Sort.by("userid")); //--> JPQL(Query in Repository)
+            Iterable<Object[]> list = this.contactRepository.getContact(userId, Sort.by("userid")); //--> JPQL(Query in Repository)
             final List<ContactResponse> userList = new ArrayList<>();
 
             list.forEach(c -> {
@@ -137,38 +137,27 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ApiResponse deleteContacts(List<Long> userId) { //can deleteAll be used here
+    public ApiResponse deleteContacts(List<Long> contactIds) { //can deleteAll be used here
 
         try {
-            Iterable<ContactList> contactList = this.contactListRepository.findAllById(userId);
+            String ids = contactIds.stream().map(i -> String.valueOf(i)).collect(Collectors.joining(","));
+            List<Long> contactids = this.contactRepository.deleteByContactIds(ids);
+            if (contactIds.size() > 0) {
+                contactids = this.contactListRepository.deleteByIds(contactIds.stream().map(i -> String.valueOf(i)).collect(Collectors.joining(",")));
+                return ApiResponse.successResponse(
+                        Constants.ErrorCodes.CODE_SUCCESS,
+                        Constants.MSG_USER_DELETE,
+                        new ArrayList<>(contactids));
+            } else {
+                return new ApiResponse(
+                        Collections.emptyList(),
+                        "Please send valid contact ids",
+                        Constants.MSG_STATUS_FAIL,
+                        Constants.ErrorCodes.CODE_FAIL);
 
-            contactList.forEach(contact -> {
-
-                Optional<Contact> contactOpt = this.contactRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
-                    Predicate p = criteriaBuilder.equal(root.get("contactid"), contact);
-                    return criteriaBuilder.and(p);
-                });
-                contactOpt.ifPresent(c -> {
-                    this.contactRepository.delete(c);
-                });
-                this.contactListRepository.delete(contact);
-            });
-
-            List<ContactResponse> deletedContacts = Utility.stream(contactList).map(contact -> {
-                ContactResponse res = new ContactResponse();
-                res.setId(contact.getId());
-                res.setFirstName(contact.getFirstName());
-                res.setLastName(contact.getLastName());
-                res.setMail(contact.getMail());
-                res.setContact(contact.getNumber());
-                return res;
-            }).collect(Collectors.toList());
+            }
 
 
-            return ApiResponse.successResponse(
-                    Constants.ErrorCodes.CODE_SUCCESS,
-                    Constants.MSG_USER_DELETE,
-                    new ArrayList<>(deletedContacts));
         } catch (Exception e) {
             e.printStackTrace();
             return new ApiResponse(
@@ -222,22 +211,25 @@ public class ContactServiceImpl implements ContactService {
 
         Optional<ContactList> contactListOpt = this.contactListRepository.findById(userId);
         try {
-            contactListOpt.ifPresent(c -> {
-                //ContactList contactList = new ContactList() /any issue if I don't do this?
-                c.setFirstName(model.getFirstName());
-                c.setLastName(model.getLastName());
-                c.setMail(model.getMail());
-                c.setNumber(model.getContact());
-            });
+            if (contactListOpt.isPresent()) {
+                ContactList contactList = contactListOpt.get();
+                contactList.setFirstName(model.getFirstName());
+                contactList.setLastName(model.getLastName());
+                contactList.setMail(model.getMail());
+                contactList.setNumber(model.getContact());
 
-            ContactList savedContactList = this.contactListRepository.save(contactListOpt.get());
-            ContactResponse res = new ContactResponse();
-            res.setId(savedContactList.getId());
-            return ApiResponse.successResponse(
-                    Constants.ErrorCodes.CODE_SUCCESS,
-                    Constants.MSG_USER_UPDATE,
-                    Arrays.asList(res));
+                ContactList savedContactList = this.contactListRepository.save(contactList);
+                ContactResponse res = new ContactResponse();
+                res.setId(savedContactList.getId());
+                return ApiResponse.successResponse(
+                        Constants.ErrorCodes.CODE_SUCCESS,
+                        Constants.MSG_USER_UPDATE,
+                        Arrays.asList(res));
 
+            }
+            return ApiResponse.failResponse(
+                    Constants.ErrorCodes.CODE_FAIL,
+                    Constants.MSG_AUTH_NO_USER);
         } catch (Exception e) {
             e.printStackTrace();
             return new ApiResponse(
@@ -248,8 +240,6 @@ public class ContactServiceImpl implements ContactService {
 
         }
 
-
-        //how to deal with situation when ifPresent() is wrong ??
     }
 
     @Override

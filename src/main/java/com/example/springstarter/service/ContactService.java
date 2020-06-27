@@ -13,7 +13,7 @@ public interface ContactService {
 
     //ApiResponse deleteContact(Long userId);   ---- to delete only one Id at a time
 
-    ApiResponse deleteContacts(List<Long> userId); // --- for multiple deletions
+    ApiResponse deleteContacts(List<Long> userIds); // --- for multiple deletions
 
 
     ApiResponse updateContactList(Long userId, ContactModel model);
