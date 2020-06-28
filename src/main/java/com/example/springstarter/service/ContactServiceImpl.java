@@ -137,12 +137,12 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ApiResponse deleteContacts(List<Long> contactIds) { //can deleteAll be used here
+    public ApiResponse deleteContacts(List<Long> contactIds) { //can deleteAll be used here - No because that is for entire entity.
 
         try {
-            String ids = contactIds.stream().map(i -> String.valueOf(i)).collect(Collectors.joining(","));
+            String ids = contactIds.stream().map(i -> String.valueOf(i)).collect(Collectors.joining(","));//contactids coming are of type long so converted to String
             List<Long> contactids = this.contactRepository.deleteByContactIds(ids);
-            if (contactIds.size() > 0) {
+            if (contactids.size() > 0) {
                 contactids = this.contactListRepository.deleteByIds(contactIds.stream().map(i -> String.valueOf(i)).collect(Collectors.joining(",")));
                 return ApiResponse.successResponse(
                         Constants.ErrorCodes.CODE_SUCCESS,
@@ -156,7 +156,6 @@ public class ContactServiceImpl implements ContactService {
                         Constants.ErrorCodes.CODE_FAIL);
 
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();

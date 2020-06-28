@@ -33,10 +33,10 @@ public class ContactController {
         return this.contactService.addContacts(userId, model);
     }
 
-     @DeleteMapping(value="/{userId}") //Deletes the Users of ContactList as well as its corresponding mapping in Contact table by its ContactID.
-    public ApiResponse delete(@RequestBody List<Long> ids) {
+     @DeleteMapping(value="/{contactId}") //Deletes multiple users of ContactList as well as its corresponding mapping in Contact table by its ContactID.//will first delete from contact table then contact_list because of F.K contactid in contact table
+    public ApiResponse delete(@RequestBody List<Long> contactIds) {
         //List<Long> ids = new Gson().fromJson(body, new TypeToken<List<Long>>(){}.getType());
-        return this.contactService.deleteContacts(ids);
+        return this.contactService.deleteContacts(contactIds);
     }
 
     @PutMapping(value="/{userId}")

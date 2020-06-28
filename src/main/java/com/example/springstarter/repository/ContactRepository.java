@@ -16,6 +16,10 @@ public interface ContactRepository extends CrudRepository<Contact, Long>, JpaSpe
     @Query(value = "select c.contactid , cl.firstName, cl.lastName, cl.number, cl.mail from Contact c join ContactList cl on c.contactid = cl.id where c.userid = ?1")
     List<Object[]> getContact(Long id , Sort sort);
 
-    @Query(value = "delete from contact where contactid in (select unnest\\:\\:bigint from unnest(string_to_array(?1, ','))) returning contactid", nativeQuery = true)
+    /*@Query(value = "delete from contact where contactid in (select unnest\\:\\:bigint from unnest(string_to_array(?1, ','))) returning contactid", nativeQuery = true)
     List<Long> deleteByContactIds(String ids);
+*/
+    @Query(value = "delete from contact where contactid in (select cast(unnest as bigint) from unnest(string_to_array(?1, ','))) returning contactid", nativeQuery = true)
+    List<Long> deleteByContactIds(String ids);
+
 }
