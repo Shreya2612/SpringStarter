@@ -6,21 +6,27 @@ import com.example.springstarter.entity.Users;
 import com.example.springstarter.model.request.ContactModel;
 import com.example.springstarter.model.response.ApiResponse;
 import com.example.springstarter.model.response.ContactResponse;
+import com.example.springstarter.model.response.CreateContactResponse;
+import com.example.springstarter.model.response.DataItem;
 import com.example.springstarter.repository.ContactListRepository;
 import com.example.springstarter.repository.ContactRepository;
 import com.example.springstarter.repository.UsersRepository;
 import com.example.springstarter.util.Constants;
 import com.example.springstarter.util.Utility;
+import com.google.gson.JsonObject;
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ContactServiceImpl implements ContactService {
+    //   Long lastUserId;
 
     @Autowired
     private UsersRepository usersRepository;    //this is created for the new JPA Users Repo.
@@ -80,22 +86,40 @@ public class ContactServiceImpl implements ContactService {
     public ApiResponse addContacts(Long userId, List<ContactModel> models) // id coming here is id(PK) of Users table or userid of auth table
     {
         try {
-            Optional<Users> optUser = this.usersRepository.findById(userId);
-
+            Optional<Users> optUser = this.usersRepository.findById(userId); //if user present in user repo it has to be present in auth_user as well coz we r saving in that way.Ref: UserServiceImpl Class
             if (optUser.isPresent()) {
                 List<ContactList> contactRows = new ArrayList<>();
                 models.forEach(model -> {
-                    ContactList contactListTbl = new ContactList();
-                    contactListTbl.setFirstName(model.getFirstName());
-                    contactListTbl.setLastName(model.getLastName());
-                    contactListTbl.setNumber(model.getContact());
-                    contactListTbl.setMail(model.getMail());
+                    // validation for not saving same nos.
+                    Iterable<Contact> idChk = this.contactRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+                        Predicate p = criteriaBuilder.equal(root.get("userid"), userId);
+                        return criteriaBuilder.and(p);
+                    });
+                    List<Long> contactId = Utility.stream(idChk).map(i -> {
+                        return i.getContactid();
+                    }).collect(Collectors.toList());
 
-                    contactRows.add(contactListTbl);
+                    Optional<ContactList> contactChk = this.contactListRepository.findOne((root, criteriaQuery, criteriaBuilder) -> {
+                        Predicate p = criteriaBuilder.equal(root.get("number"), model.getContact());
+                        CriteriaBuilder.In<Long> inClause = criteriaBuilder.in(root.get("id"));
+                        for (Long id : contactId) {
+                            inClause.value(id);
+                        }
+                        //  criteriaQuery.select().where(inClause);
+                        return criteriaBuilder.and(p, inClause);
+                    });
+
+                    if (!contactChk.isPresent()) { //if contact already does not exist
+                        ContactList contactListTbl = new ContactList();
+                        contactListTbl.setFirstName(model.getFirstName());
+                        contactListTbl.setLastName(model.getLastName());
+                        contactListTbl.setNumber(model.getContact());
+                        contactListTbl.setMail(model.getMail());
+
+                        contactRows.add(contactListTbl);
+                    }
                 });
-
-
-                Iterable<ContactList> savedContactList = this.contactListRepository.saveAll(contactRows);//user created in ContactList table
+                Iterable<ContactList> savedContactList = this.contactListRepository.saveAll(contactRows);//contacts created in ContactList table
                 //[......] -> [contactId, userId] -> saveContact table
                 List<Contact> contactTblList = Utility.stream(savedContactList).map(contact -> {
                     Contact contactTbl = new Contact();
@@ -103,21 +127,56 @@ public class ContactServiceImpl implements ContactService {
                     contactTbl.setUserid(optUser.get().getId()); //to set userid in Contact table
                     return contactTbl;
                 }).collect(Collectors.toList());
-
-
                 Iterable<Contact> savedContacts = this.contactRepository.saveAll(contactTblList);
-                List<ContactResponse> res = Utility.stream(savedContacts).map(contact -> {
-                    ContactResponse r = new ContactResponse();
-                    r.setId(contact.getId());
-                    return r;
-                }).collect(Collectors.toList());
+/*
+Steps to create response for this without using model class :
+                { success: [], failure: [] }
+                ArrayList<String> success = new ArrayList<>();
+                ArrayList<String> failure = new ArrayList<>();
+                String collect = success.stream().map(i -> "\"" + i + "\"").collect(Collectors.joining());
+                String collect2 = failure.stream().map(i -> "\"" + i + "\"").collect(Collectors.joining());
+                JsonObject ob = Utility.toJson("{\"success\": " + collect + ", \"failure\": " + collect2 + " }");
 
+*/
+                int contactSize = models.size() - contactRows.size();
+                if (contactSize == 0) {
+                    List<Long> successIds = Utility.stream(savedContactList).map(contact -> {
+                        return contact.getId();
+                    }).collect(Collectors.toList());
 
-                return ApiResponse.successResponse(
-                        Constants.ErrorCodes.CODE_CREATE_SUCCESS,
-                        "Users added in Contact List",
-                        new ArrayList<>(res));
+                    return ApiResponse.successResponse(
+                            Constants.ErrorCodes.CODE_CREATE_SUCCESS,
+                            "All users have been added in Contact List",
+                            new ArrayList<>(successIds));
+                }
+                else {
+                    int flag=0;
+                    List<ContactModel> failNums = new ArrayList<>();
+                    for(ContactModel user1 : models) {
+                        flag=0;
+                        for(ContactList user2 : contactRows) {
+                            if(user1.getContact().equals(user2.getNumber())) // how this works ?
+                            {
+                                flag=1;break;
+                            }
+                        }
+                       if(flag==0) failNums.add(user1);
+                    }
 
+                    List<Long> failNumbers = Utility.stream(failNums).map(f -> {
+                        return f.getContact();
+                    }).collect(Collectors.toList());
+
+                    List<Long> successIds = Utility.stream(contactRows).map(contact -> {
+                        return contact.getId();
+                    }).collect(Collectors.toList());
+
+                    return ApiResponse.successResponse(
+                            Constants.ErrorCodes.CODE_CREATE_SUCCESS,
+                            "Only new users have been added in Contact List",
+                            new ArrayList<>((List<CreateContactResponse>)new CreateContactResponse((List<DataItem>) new DataItem(successIds,failNumbers)))
+                    );
+                }
             }
             return new ApiResponse(
                     Collections.emptyList(),
