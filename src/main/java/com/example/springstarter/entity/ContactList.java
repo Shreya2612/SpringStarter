@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Comparator;
+
 @Getter
 @Setter
 @Data
@@ -35,5 +37,6 @@ public class ContactList implements Serializable {
     @Column(name = "mail")
     private String mail;
 
-    
+
+
 }

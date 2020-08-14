@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ApiResponse {
     private List<Object> data = Collections.EMPTY_LIST;
+   // private List<Object> successContacts = Collections.EMPTY_LIST;
+   // private List<Object> failContacts = Collections.EMPTY_LIST;
     private String message;
     private String status;
     private int statusCode;
@@ -50,6 +52,13 @@ public class ApiResponse {
         this.statusCode = statusCode;
     }
 
+   /* public ApiResponse(List<List<List<Object>>> data, String message, String status, int statusCode) {
+        this.data = data;
+        this.message = message;
+        this.status = status;
+        this.statusCode = statusCode;
+    }*/
+
     public ApiResponse() {  //since we created the above constructor ,creating this default constructor was necessary.
     }
 
@@ -82,4 +91,14 @@ public class ApiResponse {
                 errorCode
         );
     }
+   //ApiResponse created for showing  successfully added contacts while calling Create contacts API(multiple contact addition)
+ /*   public static ApiResponse successContacts(int errrorCode, String msg, List<Object> success, List<Object> fail){
+        return  new ApiResponse(
+                success,
+                fail,
+                msg,
+                Constants.MSG_STATUS_SUC,
+                errrorCode
+        );
+    }*/
 }

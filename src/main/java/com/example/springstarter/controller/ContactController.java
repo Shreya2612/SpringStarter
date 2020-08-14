@@ -49,5 +49,4 @@ public class ContactController {
         return this.contactService.getContact(userId);
     }
 
-
 }

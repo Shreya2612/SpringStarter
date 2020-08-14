@@ -1,12 +1,15 @@
 package com.example.springstarter.util;
 
 import com.example.springstarter.model.request.UserModel;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -77,8 +80,18 @@ public interface Utility {
                 ),
                 false
         );
+
     }
 
+   /* public static JsonObject toJson(String jsonStr) {
+        return JsonParser.parseString(jsonStr).getAsJsonObject();
+    }
+
+    public static List<String> diff(List<String> a, List<String> b) {
+        *//* Return a list containing elements which are in a but not in b. Assume that
+        * b is always a subset of a*//*
+    }
+*/
 
 } //whatever stays inside utility is always an independent piece of code.
 
